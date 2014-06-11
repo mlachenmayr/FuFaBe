@@ -3,7 +3,7 @@
   <states>
     <initialNode Id="d7482d81-3203-4330-a797-98918fa304de" name="InitialNode1">
       <successors>
-        <transition Id="33734852-f618-4aea-8b82-5f7e86631cd3">
+        <transition Id="33734852-f618-4aea-8b82-5f7e86631cd3" guard="SignalClosedCrossing == false" label="SignalClosedCrossing == false">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Away" />
         </transition>
       </successors>
@@ -27,11 +27,14 @@
         <transition Id="1e34109f-c0c0-4b27-8998-39f6ef208dd8" guard="Position == 30" label="Position == 30">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/BP" />
         </transition>
+        <transition Id="07355c1a-a0a0-44f2-9325-d6fe9afee943" guard="TrainRadioReceiver == ReceiveResponse" action="SignalClosedCrossing := true" label="TrainRadioReceiver == ReceiveResponse // SignalClosedCrossing := true" precondition="SignalClosedCrossing == false">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/AP" />
+        </transition>
       </successors>
     </state>
     <state Id="e6decd3b-688e-4316-9055-446ae0c1c674" name="BP">
       <successors>
-        <transition Id="92232c08-6aab-41b5-b8ec-7484123e751c">
+        <transition Id="92232c08-6aab-41b5-b8ec-7484123e751c" guard="SignalClosedCrossing == false" label="SignalClosedCrossing == false">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Stop" />
         </transition>
         <transition Id="af7a95a7-3c30-491c-a927-d912cdedd826" guard="Position == 45" label="Position == 45">
@@ -49,9 +52,17 @@
     </state>
     <state Id="d8d6c4c3-b56a-40c7-961d-5b2a7288f4c3" name="SP" />
   </states>
+  <variables>
+    <programGraphHasVariables Id="4905c99b-1258-4a5a-835f-8cb3e84f4822">
+      <variable Id="ba978986-22c6-43df-992b-eaf6d70b0d72" name="SignalClosedCrossing" range="bool" />
+    </programGraphHasVariables>
+  </variables>
   <importedVariables>
     <programGraphHasImportedVariables Id="a229bc48-2e6a-49af-8cba-a009cd5c5e18">
       <importedVariable Id="a208d1d8-92be-4dc7-93e8-e52475440e64" name="TrainMotion.Position" range="0..60" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="d3516c80-aa59-44ff-ae3b-6aea7b16b3fa">
+      <importedVariable Id="1ad11fa8-a7e2-4f95-b0f6-32562e890bd6" name="TrainRadioReceiver" range="Idle, ReceiveResponse" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

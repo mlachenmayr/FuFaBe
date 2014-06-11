@@ -3,7 +3,7 @@
   <states>
     <initialNode Id="9d25e80a-0bbf-41fc-b149-2cc6c5f9a1bb" name="InitialNode1">
       <successors>
-        <transition Id="1d50608f-2d1d-4ece-8ef3-ef35e2d315fa">
+        <transition Id="1d50608f-2d1d-4ece-8ef3-ef35e2d315fa" guard="Position == 60 &amp;&amp; Speed == 1" label="Position == 60 &amp;&amp; Speed == 1">
           <stateMoniker name="/ccdfe724-9dce-485d-9bd9-04426c9cd425/Moving" />
         </transition>
       </successors>

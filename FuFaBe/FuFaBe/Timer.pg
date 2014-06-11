@@ -17,13 +17,13 @@
     </state>
     <state Id="da3d1076-14cb-42f9-8aae-d753fab951c9" name="Tick">
       <successors>
-        <transition Id="7d78be29-3f31-4494-9f5d-4f13c063f075">
+        <transition Id="7d78be29-3f31-4494-9f5d-4f13c063f075" guard="CrossingControl == Opening" label="CrossingControl == Opening">
           <stateMoniker name="/7abdc1ab-f7bb-4a97-80ee-fcd2454eab00/Idle" />
         </transition>
         <transition Id="6e7fdf62-ce74-4734-a57a-f74eba8f81b1" guard="Time == MIN_Time" label="Time == MIN_Time">
           <stateMoniker name="/7abdc1ab-f7bb-4a97-80ee-fcd2454eab00/Timeout" />
         </transition>
-        <transition Id="dbd09ac4-8f23-4f35-a0cd-e5aff399ef7d">
+        <transition Id="dbd09ac4-8f23-4f35-a0cd-e5aff399ef7d" guard="CrossingControl == Closed" action="Time := Time - DELTA_Time" label="CrossingControl == Closed // Time := Time - DELTA_Time" precondition="Time &gt;= DELTA_Time">
           <stateMoniker name="/7abdc1ab-f7bb-4a97-80ee-fcd2454eab00/Tick" />
         </transition>
       </successors>
@@ -41,6 +41,9 @@
     </programGraphHasMacros>
     <programGraphHasMacros Id="e73abfaf-dbce-4934-802b-4ebfa921ffbc">
       <macro Id="5baf5831-44c5-4989-99ea-6e9234a50605" name="MIN_Time" body="0" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="1f908cac-9770-4eed-937a-bcd7e5e54263">
+      <macro Id="f571a90c-45a2-4938-9fd1-b39dd103282b" name="DELTA_Time" body="1" />
     </programGraphHasMacros>
   </macros>
   <importedVariables>
