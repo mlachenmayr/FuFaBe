@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="35d2bdf5-7e58-46e9-9b0c-259b74433342" name="CrossingSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="fe70c466-4945-4bb6-83c5-c093b1dbdd88" name="InitialNode1">
+      <successors>
+        <transition Id="ad4610eb-2669-4f05-9daf-bf4cbead3dc3">
+          <stateMoniker name="/35d2bdf5-7e58-46e9-9b0c-259b74433342/NothingToSeeHere" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="b3302acb-fe8f-4c88-b0c5-ff99cc80be64" name="NothingToSeeHere">
+      <successors>
+        <transition Id="b537e557-f564-4a2b-ae7f-ef66fe30d836" guard="Position == SP" label="Position == SP">
+          <stateMoniker name="/35d2bdf5-7e58-46e9-9b0c-259b74433342/TrainOnCrossing" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="b5137185-7068-4705-84b3-09b4d8595320" name="TrainOnCrossing">
+      <successors>
+        <transition Id="acfe7795-692e-4782-9940-03ad340c4815" guard="Position == InfinityLoop" label="Position == InfinityLoop">
+          <stateMoniker name="/35d2bdf5-7e58-46e9-9b0c-259b74433342/TrainLeftCrossing" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="44576b09-336e-47d9-b5e9-e56f12bf6d50" name="TrainLeftCrossing">
+      <successors>
+        <transition Id="a417d60b-12c4-4eae-b2b1-6f47c6e27648">
+          <stateMoniker name="/35d2bdf5-7e58-46e9-9b0c-259b74433342/NothingToSeeHere" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="0ee0e7ce-52a1-4fbc-80d5-cba7aab47732">
+      <importedVariable Id="ccaeaa00-d5d8-437d-9ffe-a9a2a8002ed8" name="Position" range="Far, EP, BEP, SP, AP, InfinityLoop" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

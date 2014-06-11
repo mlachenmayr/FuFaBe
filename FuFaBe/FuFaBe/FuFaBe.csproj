@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A63176C2-F3C8-4812-869F-E92E0A222A6A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FuFaBe</RootNamespace>
+    <AssemblyName>FuFaBe</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="CommunicationMedium.pg" />
+    <None Include="CommunicationMedium.pg.diagram">
+      <DependentUpon>CommunicationMedium.pg</DependentUpon>
+    </None>
+    <None Include="Crossing.pg" />
+    <None Include="Crossing.pg.diagram">
+      <DependentUpon>Crossing.pg</DependentUpon>
+    </None>
+    <None Include="CrossingControl.pg" />
+    <None Include="CrossingControl.pg.diagram">
+      <DependentUpon>CrossingControl.pg</DependentUpon>
+    </None>
+    <None Include="CrossingMotor.pg" />
+    <None Include="CrossingMotor.pg.diagram">
+      <DependentUpon>CrossingMotor.pg</DependentUpon>
+    </None>
+    <None Include="CrossingRadioReceiver.pg" />
+    <None Include="CrossingRadioReceiver.pg.diagram">
+      <DependentUpon>CrossingRadioReceiver.pg</DependentUpon>
+    </None>
+    <None Include="CrossingRadioSender.pg" />
+    <None Include="CrossingRadioSender.pg.diagram">
+      <DependentUpon>CrossingRadioSender.pg</DependentUpon>
+    </None>
+    <None Include="CrossingSensor.pg" />
+    <None Include="CrossingSensor.pg.diagram">
+      <DependentUpon>CrossingSensor.pg</DependentUpon>
+    </None>
+    <None Include="EmergencyBreak.pg" />
+    <None Include="EmergencyBreak.pg.diagram">
+      <DependentUpon>EmergencyBreak.pg</DependentUpon>
+    </None>
+    <None Include="OpeningSensor.pg" />
+    <None Include="OpeningSensor.pg.diagram">
+      <DependentUpon>OpeningSensor.pg</DependentUpon>
+    </None>
+    <None Include="Timer.pg" />
+    <None Include="Timer.pg.diagram">
+      <DependentUpon>Timer.pg</DependentUpon>
+    </None>
+    <None Include="TrainControl.pg" />
+    <None Include="TrainControl.pg.diagram">
+      <DependentUpon>TrainControl.pg</DependentUpon>
+    </None>
+    <None Include="TrainMotion.pg" />
+    <None Include="TrainMotion.pg.diagram">
+      <DependentUpon>TrainMotion.pg</DependentUpon>
+    </None>
+    <None Include="TrainRadioReceiver.pg" />
+    <None Include="TrainRadioReceiver.pg.diagram">
+      <DependentUpon>TrainRadioReceiver.pg</DependentUpon>
+    </None>
+    <None Include="TrainRadioSender.pg" />
+    <None Include="TrainRadioSender.pg.diagram">
+      <DependentUpon>TrainRadioSender.pg</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

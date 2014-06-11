@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="82a13162-475f-4150-9ab2-7a3210a2fafe" name="Train" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="b8df5db2-9a75-4a65-80a5-a02c5b9134a2" name="InitialNode1">
+      <successors>
+        <transition Id="a5c740bb-4a3f-4daa-9052-38af5d27abad">
+          <stateMoniker name="/82a13162-475f-4150-9ab2-7a3210a2fafe/Moving" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="820d004f-4f12-41a1-b134-e1332e19e5c1" name="Moving">
+      <successors>
+        <transition Id="3aab1d02-f5a2-454f-ab8b-d53421d64870" guard="Brake == Active" label="Brake == Active">
+          <stateMoniker name="/82a13162-475f-4150-9ab2-7a3210a2fafe/Stopping" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="c45729dd-713e-43a6-b529-95436bf842cd" name="Stopped" />
+    <state Id="e5d74750-e33d-47c9-9b68-00bf348fe46e" name="Stopping">
+      <successors>
+        <transition Id="e8ab26f9-dd20-478d-87ca-0cf7bb1fe6ac" guard="Speed == 0" label="Speed == 0">
+          <stateMoniker name="/82a13162-475f-4150-9ab2-7a3210a2fafe/Stopped" />
+        </transition>
+        <transition Id="1f8895a8-f105-452e-935f-b4cf7b460eb1" guard="Brake == Inactive" label="Brake == Inactive">
+          <stateMoniker name="/82a13162-475f-4150-9ab2-7a3210a2fafe/Moving" />
+        </transition>
+        <transition Id="0bf3c256-e462-499c-a76c-67c31bbe25e7" action="Speed := Speed - Deceleration * MAX_DECELARATION" label="// Speed := Speed - Deceleration * MAX_DECELARATION" precondition="Speed &gt;= Deceleration * MAX_DECELARATION">
+          <stateMoniker name="/82a13162-475f-4150-9ab2-7a3210a2fafe/Stopping" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="739cb52f-4629-4353-a9df-460c40230d74">
+      <variable Id="3937214a-8e31-4d52-a7d8-82f067e9e80c" name="Speed" range="0..45" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="2b43ff79-e8cb-4398-8858-665c512ef457">
+      <variable Id="48698cb5-0da3-46f2-832c-85b078510e65" name="TrainLength" range="1" />
+    </programGraphHasVariables>
+  </variables>
+  <macros>
+    <programGraphHasMacros Id="6e973bd3-e959-405d-bed5-d7e7c588e988">
+      <macro Id="4890f6c2-780f-42ad-aa80-492f8216773d" name="MAX_DECELARATION" body="4" />
+    </programGraphHasMacros>
+  </macros>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="6ef06cce-7a23-4500-a119-3d52417e577a">
+      <importedVariable Id="f993e4c8-1f0c-418a-b5c6-ecd97321ad1b" name="Brake" range="Inactive, Active" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="13bd71f3-3c4d-455a-afe8-553122f2b851">
+      <importedVariable Id="47b7c443-daa3-4b0f-a5f4-4fa6526bb76a" name="Brake.Deceleration" range="0..1" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

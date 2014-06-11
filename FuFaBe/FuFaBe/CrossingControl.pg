@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="f78cf760-3e31-4520-a1e8-a50f55777908" name="CrossingControl" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="6b734a1e-ddea-4003-b0b8-e73e0434e483" name="InitialNode1">
+      <successors>
+        <transition Id="08d752e9-2404-4ea6-b673-92094a4b56e5">
+          <stateMoniker name="/f78cf760-3e31-4520-a1e8-a50f55777908/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="31cdcfb4-17b3-4895-b39f-97d8ea3c4c42" name="Idle">
+      <successors>
+        <transition Id="e5f6c5ff-4555-4274-a871-6605eb40fecd" guard="CrossingRadioReceiver == ReceiveClose" label="CrossingRadioReceiver == ReceiveClose">
+          <stateMoniker name="/f78cf760-3e31-4520-a1e8-a50f55777908/Closing" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="4bc4f375-1093-4640-8c30-448ea9660ba5" name="Closing">
+      <successors>
+        <transition Id="0d047a7b-1501-4e49-b442-ca6cb2554b60" guard="CrossingSensor == Closed" label="CrossingSensor == Closed">
+          <stateMoniker name="/f78cf760-3e31-4520-a1e8-a50f55777908/Closed" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="334359b6-11f3-47ae-93d5-2142bd1d36b8" name="Opening">
+      <successors>
+        <transition Id="430b9298-44b2-489c-b771-b5f97aaa8ab4" guard="CrossingSensor == Opened" label="CrossingSensor == Opened">
+          <stateMoniker name="/f78cf760-3e31-4520-a1e8-a50f55777908/Opened" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="8df3f47d-afdd-4a57-8a86-29782d15d0aa" name="Closed">
+      <successors>
+        <transition Id="d0aa270d-1a78-4e18-8d10-431fa457b49a" guard="OpeningSensor == Open || Timer == Timeout" label="OpeningSensor == Open || Timer == Timeout">
+          <stateMoniker name="/f78cf760-3e31-4520-a1e8-a50f55777908/Opening" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="09f437b3-726a-4138-8c23-9d4e7e5d6eee" name="Opened">
+      <successors>
+        <transition Id="e55c3fee-ca19-4b00-85a0-b70871687fb4" guard="true" label="true">
+          <stateMoniker name="/f78cf760-3e31-4520-a1e8-a50f55777908/Idle" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="14be129a-89fa-4ffc-9ef4-3f90f62cf5f2">
+      <importedVariable Id="698a52a0-e0d2-432f-a3d5-0cf9b6a1dfd1" name="CrossingRadioReceiver" range="Idle, ReceiveClose, ReceiveRequest" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="5798e41e-004c-4534-870c-eaa7c319540b">
+      <importedVariable Id="08c1a227-03c9-4c52-8dbd-dc42dae98767" name="CrossingSensor" range="Opened, Closed, Moving" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="11392a76-da49-41c1-b2bb-bbf8b5512a3c">
+      <importedVariable Id="d922a2d1-7753-4d26-bf4c-c6b272d5807b" name="Timer" range="Idle, Tick, Timeout" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="523d5440-b9f6-46d6-9e6f-9647e8dc6647">
+      <importedVariable Id="12c90906-389a-4541-88d2-85a248884388" name="OpeningSensor" range="Idle, Waitng, Open" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

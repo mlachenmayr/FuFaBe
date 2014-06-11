@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="a41212b7-71f4-444a-88a8-7dc01f032279" name="EmergencyBreak" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="c15c7abd-7174-496d-8275-33675a0f044b" name="InitialNode1">
+      <successors>
+        <transition Id="92c1bb44-875d-46fa-8292-20de4e778e1b">
+          <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/Off" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="51d53f89-9e72-4936-b689-a988c5656697" name="Off">
+      <successors>
+        <transition Id="9a0b1f53-7807-47b2-9c22-f0989296dea2">
+          <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="bdf5cc38-1f6d-4c50-b0dd-a1378b1ef7b7" name="On" />
+  </states>
+</programGraph>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="7cde302c-abe8-49bf-a771-e343ce355b2c" name="TrainRadioSender" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="72e8c580-f6c6-472d-a198-57d16d90ab2e" name="InitialNode1">
+      <successors>
+        <transition Id="dc39f756-161b-4153-9e52-c1301d45357e">
+          <stateMoniker name="/7cde302c-abe8-49bf-a771-e343ce355b2c/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="d8f34362-273e-4d3e-a928-6217668bd6c4" name="Idle">
+      <successors>
+        <transition Id="7223ff05-3ffc-4890-89cf-66b4dff740f8" guard="TrainControl == EP" label="TrainControl == EP">
+          <stateMoniker name="/7cde302c-abe8-49bf-a771-e343ce355b2c/SendCloseSignal" />
+        </transition>
+        <transition Id="4e13e8fb-3f0e-4192-8706-f50a724ebdb1" guard="TrainControl == AP" label="TrainControl == AP">
+          <stateMoniker name="/7cde302c-abe8-49bf-a771-e343ce355b2c/SendRequest" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="25a97141-0ddd-427d-be8c-e114496a12eb" name="SendCloseSignal">
+      <successors>
+        <transition Id="15811324-13bd-4c86-9398-ddedfa0d7c00" guard="true" label="true">
+          <stateMoniker name="/7cde302c-abe8-49bf-a771-e343ce355b2c/Idle" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="253f93e5-1c45-45f3-ba4c-5a53ebf102e1" name="SendRequest">
+      <successors>
+        <transition Id="159d9393-364d-42d2-ba6f-c30f4f304fce" guard="true" label="true">
+          <stateMoniker name="/7cde302c-abe8-49bf-a771-e343ce355b2c/Idle" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="6b578a55-508b-4e4a-9c74-1e5de13615ad">
+      <importedVariable Id="1b656aeb-c0a7-48a6-9c59-38b9060b73f4" name="TrainControl" range="Away, EP, AP, BP, Stop, GP, SP" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

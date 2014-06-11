@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="b983dbd1-1f14-4e4f-b551-09550c90ac8f" name="Position" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="da17e804-70ce-4d1b-8921-820566a75ed9" name="InitialNode1">
+      <successors>
+        <transition Id="d98a1d6a-0806-4b11-9377-70018f7c95e8">
+          <stateMoniker name="/b983dbd1-1f14-4e4f-b551-09550c90ac8f/Far" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="7dbe32c7-e750-48fe-ad0d-eba34b331267" name="Far">
+      <successors>
+        <transition Id="20fa0945-990e-4c5b-b1af-6fb19bbb9736" guard="DistanceToCrossing &lt;=EP_CALC + AP_CALC + BEP_CALC" label="DistanceToCrossing &lt;=EP_CALC + AP_CALC + BEP_CALC">
+          <stateMoniker name="/b983dbd1-1f14-4e4f-b551-09550c90ac8f/EP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="196f4556-23dc-4488-8c1a-8102086c0100" name="EP">
+      <successors>
+        <transition Id="2fb786fa-423b-4ea9-9a41-51afe060d352" guard="DistanceToCrossing &lt;= AP_CALC + BEP_CALC" label="DistanceToCrossing &lt;= AP_CALC + BEP_CALC">
+          <stateMoniker name="/b983dbd1-1f14-4e4f-b551-09550c90ac8f/AP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="1334fc62-61a3-41ce-90c2-5b606201d573" name="BEP">
+      <successors>
+        <transition Id="6e07011d-c519-4159-a86d-804e18d8134e" guard="DistanceToCrossing &lt;= 0" label="DistanceToCrossing &lt;= 0">
+          <stateMoniker name="/b983dbd1-1f14-4e4f-b551-09550c90ac8f/SP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="a73f9f37-d3f3-469f-b08f-26967ee43e18" name="SP">
+      <successors>
+        <transition Id="5cecfbf1-e75f-4597-a8c7-efc7ca83cac0" guard="DistanceToCrossing &lt; TrainLength" label="DistanceToCrossing &lt; TrainLength">
+          <stateMoniker name="/b983dbd1-1f14-4e4f-b551-09550c90ac8f/InfinityLoop" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="6b245550-cb8f-4c55-bdce-472317b192a4" name="AP">
+      <successors>
+        <transition Id="ef2ee839-2b82-4672-b4fa-2fc3fae0f47e" guard="DistanceToCrossing &lt;= BEP_CALC" label="DistanceToCrossing &lt;= BEP_CALC">
+          <stateMoniker name="/b983dbd1-1f14-4e4f-b551-09550c90ac8f/BEP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="80e4a1f4-a88b-43f0-aaa9-0654c9796bd9" name="InfinityLoop" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="41601a9b-72af-4723-bda3-6951daf81bb6">
+      <variable Id="ceee618a-c5fa-48e3-9288-b26352b5fafb" name="DistanceToCrossing" range="-100..500" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="fcff2c1c-3bae-4c7d-886b-e9dd22fae0fe">
+      <variable Id="28bb022e-b23c-4dde-9b29-b6918769d8c8" name="z" range="10" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="fa40a9b8-4573-4119-b4e1-b02e4ce2f9d8">
+      <variable Id="b2cfb8eb-0270-4afb-96c3-f3941bd30ec1" name="c" range="3" />
+    </programGraphHasVariables>
+  </variables>
+  <macros>
+    <programGraphHasMacros Id="6e1a423b-cc25-4266-ab73-4b08666d7c37">
+      <macro Id="3c0af456-2317-4e1c-af1d-d71f8bb733c9" name="BEP_CALC" body="z + Speed * Speed / 2 * Deceleration" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="0795ee6e-338d-442c-be91-a97065bd5db6">
+      <macro Id="ccbd0a2a-2d01-4cc1-bec9-82cdf2993a85" name="AP_CALC" body="2 * c * Speed" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="79541d8b-478c-4c1f-89e1-80019b728798">
+      <macro Id="a541541c-4754-4526-920a-f93ae260b0e7" name="EP_CALC" body="Speed * (ClosingTime + c)" />
+    </programGraphHasMacros>
+  </macros>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="91e5d64f-9762-4672-9c23-351503a68bc4">
+      <importedVariable Id="d5684ec6-5a56-4c73-95d6-23c207eefeb9" name="Train.Speed" range="0..16" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="9b1c0a9c-19bf-49e2-a3ae-ec23211b712d">
+      <importedVariable Id="63256c5e-f47f-4dc8-bd75-688d6ebd0eb3" name="Brake.Deceleration" range="0..1" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="cf84c83b-5243-43d9-8efd-c4917ead82ce">
+      <importedVariable Id="3faf2653-314a-4219-b9b2-9362b9011c62" name="Gate.ClosingTime" range="10" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="4d95ede1-93ee-435c-ab93-20381c30198e">
+      <importedVariable Id="46385978-d60a-4557-8458-6b8f38ea05a7" name="Train.TrainLength" range="1" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

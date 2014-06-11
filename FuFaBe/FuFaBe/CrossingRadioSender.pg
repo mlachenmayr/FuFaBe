@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="ba0578c3-57e5-4f2a-8b45-aafdb2b167aa" name="CrossingRadioSender" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="c631b3d5-aa9a-430c-9eb7-9e58e7346738" name="InitialNode1">
+      <successors>
+        <transition Id="63f7771a-1eee-4825-837f-d979f0a7c8a7">
+          <stateMoniker name="/ba0578c3-57e5-4f2a-8b45-aafdb2b167aa/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="92b70ce4-c6f5-4cb5-b32c-0d0ac6e809bf" name="Idle">
+      <successors>
+        <transition Id="638c0df9-c411-460f-a8cf-ac9fe3c70e81" guard="CrossingControl == Closed" label="CrossingControl == Closed">
+          <stateMoniker name="/ba0578c3-57e5-4f2a-8b45-aafdb2b167aa/SendResponse" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="d2d0314a-623f-41db-ba9e-713ad7660c5e" name="SendResponse">
+      <successors>
+        <transition Id="6c72d88e-3f2b-4243-b84a-885b4c525f63" guard="true" label="true">
+          <stateMoniker name="/ba0578c3-57e5-4f2a-8b45-aafdb2b167aa/Idle" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="cff6d478-fa61-43a3-9fd1-64869f5963c9">
+      <importedVariable Id="714f56f6-2a3f-45dd-b66e-21495eb33ead" name="CrossingControl" range="Idle, Closing, Opening, Closed, Opened" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="eed79b11-1c2b-4d11-b3fe-949c34ba4008" name="OpeningSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="1a8528af-a6de-4231-8f81-48193e3423f7" name="InitialNode1">
+      <successors>
+        <transition Id="e5db4dce-0e1e-4482-9279-2549dfc40577">
+          <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="b82c0434-4f48-4d44-9794-4efdce37a085" name="Idle">
+      <successors>
+        <transition Id="a5a64e8e-bd40-4f20-a1ce-56491f6fc68d">
+          <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Waitng" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="ae14f5f3-f80b-49a2-9f8b-e8b851a036ab" name="Waitng">
+      <successors>
+        <transition Id="58baca64-4526-4820-b369-eaa211683d2e">
+          <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Open" />
+        </transition>
+        <transition Id="39bec7c8-6fb6-4cdf-a8d0-ee4abb63c96f">
+          <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Waitng" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="62a50359-4f63-4f1e-95a4-a4052628affd" name="Open">
+      <successors>
+        <transition Id="ff851acc-ef4c-4be2-9c08-7cb5bb6367fe">
+          <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Idle" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+</programGraph>

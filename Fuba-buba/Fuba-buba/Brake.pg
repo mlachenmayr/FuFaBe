@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="b5234f5c-0b09-4bb0-b63d-4e99d485dbc2" name="Brake" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="e9c43086-da01-4473-ac75-7e24f6006164" name="InitialNode1">
+      <successors>
+        <transition Id="4c7a38d5-f2d2-4147-8ce6-f7b7d3e05149" guard="Deceleration == 0" label="Deceleration == 0">
+          <stateMoniker name="/b5234f5c-0b09-4bb0-b63d-4e99d485dbc2/Inactive" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="5eb0ec30-1baa-40a1-b4d4-f1c8ef7da907" name="Inactive">
+      <successors>
+        <transition Id="a35d43a9-dcff-4824-9f3b-ee73a36fab0d" action="Deceleration := 1" label="// Deceleration := 1" precondition="true">
+          <stateMoniker name="/b5234f5c-0b09-4bb0-b63d-4e99d485dbc2/Active" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="bc2c3091-e84a-4bc9-b9b1-2eac02739e66" name="Active">
+      <successors>
+        <transition Id="094907ee-3713-4f42-b9c3-5722fd24f71a" action="Deceleration := 0" label="// Deceleration := 0" precondition="true">
+          <stateMoniker name="/b5234f5c-0b09-4bb0-b63d-4e99d485dbc2/Inactive" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="d8a95e69-c4ab-4963-921b-8d4a3690765a">
+      <variable Id="ee31d078-a1e2-4c68-aebb-c0ecfe0e7f52" name="Deceleration" range="0..1" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="676ba4ed-f203-421f-b09b-8870abe63b12">
+      <comment Id="5969cf65-25cc-4346-9c77-283bd846337b" text="Rename Emergency Brake" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="681cd596-6cfa-4eb2-bbe1-914d50f74401">
+      <comment Id="adfed374-738d-4cab-bd8c-1640c9832520" text="Missing Guard for Emergency Brake" />
+    </programGraphHasComments>
+  </comments>
+</programGraph>

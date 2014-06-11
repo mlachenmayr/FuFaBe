@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="e718da2f-fac7-4c57-b622-0fc578751565" name="TrainControl" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="d7482d81-3203-4330-a797-98918fa304de" name="InitialNode1">
+      <successors>
+        <transition Id="33734852-f618-4aea-8b82-5f7e86631cd3">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Away" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="381a0135-7586-4bed-80fe-27805c2b57b4" name="Away">
+      <successors>
+        <transition Id="5909bbfa-ad7b-4825-869c-50f1a0a44f13" guard="Position == 3" label="Position == 3">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/EP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="0cafd155-6db2-47b7-8672-5afa9661e0c9" name="EP">
+      <successors>
+        <transition Id="a94b7c97-f8b4-49f5-aff0-93a9eff58926" guard="Position == 10" label="Position == 10">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/AP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="0481408b-8de2-4a86-86f2-0ebc36ed1d9a" name="AP">
+      <successors>
+        <transition Id="1e34109f-c0c0-4b27-8998-39f6ef208dd8" guard="Position == 30" label="Position == 30">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/BP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="e6decd3b-688e-4316-9055-446ae0c1c674" name="BP">
+      <successors>
+        <transition Id="92232c08-6aab-41b5-b8ec-7484123e751c">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Stop" />
+        </transition>
+        <transition Id="af7a95a7-3c30-491c-a927-d912cdedd826" guard="Position == 45" label="Position == 45">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/GP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="fb5e3ef8-3b89-4537-a563-1b4dee32dd97" name="Stop" />
+    <state Id="a7a4408e-b812-4f1c-a991-850d66b10e33" name="GP">
+      <successors>
+        <transition Id="57750d60-64cf-422c-a014-ab05a4b68973" guard="Position == 50" label="Position == 50">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/SP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="d8d6c4c3-b56a-40c7-961d-5b2a7288f4c3" name="SP" />
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="a229bc48-2e6a-49af-8cba-a009cd5c5e18">
+      <importedVariable Id="a208d1d8-92be-4dc7-93e8-e52475440e64" name="TrainMotion.Position" range="0..60" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>
