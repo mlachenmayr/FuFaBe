@@ -10,21 +10,21 @@
     </initialNode>
     <state Id="381a0135-7586-4bed-80fe-27805c2b57b4" name="Away">
       <successors>
-        <transition Id="5909bbfa-ad7b-4825-869c-50f1a0a44f13" guard="Position == 3" label="Position == 3">
+        <transition Id="5909bbfa-ad7b-4825-869c-50f1a0a44f13" guard="Position &lt;=EP_CALC + AP_CALC + BEP_CALC" label="Position &lt;=EP_CALC + AP_CALC + BEP_CALC">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/EP" />
         </transition>
       </successors>
     </state>
     <state Id="0cafd155-6db2-47b7-8672-5afa9661e0c9" name="EP">
       <successors>
-        <transition Id="a94b7c97-f8b4-49f5-aff0-93a9eff58926" guard="Position == 10" label="Position == 10">
+        <transition Id="a94b7c97-f8b4-49f5-aff0-93a9eff58926" guard="Position &lt;= AP_CALC + BEP_CALC" label="Position &lt;= AP_CALC + BEP_CALC">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/AP" />
         </transition>
       </successors>
     </state>
     <state Id="0481408b-8de2-4a86-86f2-0ebc36ed1d9a" name="AP">
       <successors>
-        <transition Id="1e34109f-c0c0-4b27-8998-39f6ef208dd8" guard="Position == 30" label="Position == 30">
+        <transition Id="1e34109f-c0c0-4b27-8998-39f6ef208dd8" guard="Position &lt;= BEP_CALC" label="Position &lt;= BEP_CALC">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/BP" />
         </transition>
         <transition Id="07355c1a-a0a0-44f2-9325-d6fe9afee943" guard="TrainRadioReceiver == ReceiveResponse" action="SignalClosedCrossing := true" label="TrainRadioReceiver == ReceiveResponse // SignalClosedCrossing := true" precondition="SignalClosedCrossing == false">
@@ -37,7 +37,7 @@
         <transition Id="92232c08-6aab-41b5-b8ec-7484123e751c" guard="SignalClosedCrossing == false" label="SignalClosedCrossing == false">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Stop" />
         </transition>
-        <transition Id="af7a95a7-3c30-491c-a927-d912cdedd826" guard="Position == 45" label="Position == 45">
+        <transition Id="af7a95a7-3c30-491c-a927-d912cdedd826" guard="Position == 0" label="Position == 0">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/GP" />
         </transition>
       </successors>
@@ -45,7 +45,7 @@
     <state Id="fb5e3ef8-3b89-4537-a563-1b4dee32dd97" name="Stop" />
     <state Id="a7a4408e-b812-4f1c-a991-850d66b10e33" name="GP">
       <successors>
-        <transition Id="57750d60-64cf-422c-a014-ab05a4b68973" guard="Position == 50" label="Position == 50">
+        <transition Id="57750d60-64cf-422c-a014-ab05a4b68973" guard="Position == -10" label="Position == -10">
           <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/SP" />
         </transition>
       </successors>
@@ -56,13 +56,50 @@
     <programGraphHasVariables Id="4905c99b-1258-4a5a-835f-8cb3e84f4822">
       <variable Id="ba978986-22c6-43df-992b-eaf6d70b0d72" name="SignalClosedCrossing" range="bool" />
     </programGraphHasVariables>
+    <programGraphHasVariables Id="f42fd350-6170-4df1-8899-138c5fb40000">
+      <variable Id="686ef70f-403a-48c6-b4c9-a9f19cca78ba" name="z" range="20" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="634399f1-56b0-40f9-af6f-841a3cd45f60">
+      <variable Id="5ef20449-6759-478a-ace3-ffc854a9abd2" name="c" range="3" />
+    </programGraphHasVariables>
   </variables>
+  <comments>
+    <programGraphHasComments Id="fd01ef12-4987-4b40-8887-c296d6f97ee0">
+      <comment Id="6facda2d-c4ec-44e0-ba09-f4fff63ee55d" text="c = transmission time for communication" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="2a77290a-367c-4593-b205-2843e7f99cc5">
+      <comment Id="d50a1e5e-f981-493e-a9dc-c629f6ea7afb" text="z = safety margin" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="d33a2e28-7cb4-444f-bdb5-77dee110dbbd">
+      <comment Id="ae42ff12-e322-4eb8-8e3e-f35190c2a507" text="Hint: The formula of BEP_CALC has a constant 3 in it, because the real deceleration of the brake is 0.33, that is not a valid value for an integer. So we decided to set the deceleartion to 1 by multiplying with 3." />
+    </programGraphHasComments>
+  </comments>
+  <macros>
+    <programGraphHasMacros Id="d247dd6e-eb3c-4691-97de-fc623f750f5e">
+      <macro Id="add3240e-8b56-495c-9f5f-108fa6a967bd" name="BEP_CALC" body="z + (Speed * Speed * 3) / 2 * Deceleration" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="10de7617-108b-4d80-acaf-060b2f46da40">
+      <macro Id="67cb6005-3086-4327-80ac-61cebf8d0d34" name="AP_CALC" body="2 * c * Speed" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="eb0a4551-f3a5-4e3c-89cd-9267bd459664">
+      <macro Id="6f8f079d-b7d9-4a27-86d4-ed8b8f53d88f" name="EP_CALC" body="Speed * (ClosingTime + c)" />
+    </programGraphHasMacros>
+  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="a229bc48-2e6a-49af-8cba-a009cd5c5e18">
-      <importedVariable Id="a208d1d8-92be-4dc7-93e8-e52475440e64" name="TrainMotion.Position" range="0..60" />
+      <importedVariable Id="a208d1d8-92be-4dc7-93e8-e52475440e64" name="TrainMotion.Position" range="-100..1000" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="d3516c80-aa59-44ff-ae3b-6aea7b16b3fa">
       <importedVariable Id="1ad11fa8-a7e2-4f95-b0f6-32562e890bd6" name="TrainRadioReceiver" range="Idle, ReceiveResponse" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="0c759a29-5e49-446c-a311-820933e7a6f0">
+      <importedVariable Id="69c1cdda-088f-4217-82cd-420d5d043f71" name="TrainMotion.Speed" range="0..9" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="30e4a5eb-4429-48f9-ba8c-8c0eaab6b5b0">
+      <importedVariable Id="93053b2b-63b2-464b-83fb-21c400069712" name="EmergencyBreak.Deceleration" range="1" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="2b655090-6595-4f8b-83d2-b0d13f51049f">
+      <importedVariable Id="d92a70fd-e0c9-4477-a286-52f974c5f90f" name="Crossing.ClosingTime" range="6" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

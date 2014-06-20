@@ -3,18 +3,51 @@
   <states>
     <initialNode Id="c15c7abd-7174-496d-8275-33675a0f044b" name="InitialNode1">
       <successors>
-        <transition Id="92c1bb44-875d-46fa-8292-20de4e778e1b">
+        <transition Id="92c1bb44-875d-46fa-8292-20de4e778e1b" guard="BrakeIterator ==0" label="BrakeIterator ==0">
           <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/Off" />
         </transition>
       </successors>
     </initialNode>
     <state Id="51d53f89-9e72-4936-b689-a988c5656697" name="Off">
       <successors>
-        <transition Id="9a0b1f53-7807-47b2-9c22-f0989296dea2">
+        <transition Id="9a0b1f53-7807-47b2-9c22-f0989296dea2" guard="TrainControl == Stop" label="TrainControl == Stop">
           <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
         </transition>
       </successors>
     </state>
-    <state Id="bdf5cc38-1f6d-4c50-b0dd-a1378b1ef7b7" name="On" />
+    <state Id="bdf5cc38-1f6d-4c50-b0dd-a1378b1ef7b7" name="On">
+      <successors>
+        <transition Id="6b1fe93c-3980-49c1-ad01-4f9285d61b46" guard="BrakeIterator &lt; 2" action="BrakeIterator := BrakeIterator + 1" label="BrakeIterator &lt; 2 // BrakeIterator := BrakeIterator + 1" precondition="BrakeIterator &lt; 2">
+          <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
+        </transition>
+        <transition Id="7cbe938f-c242-46c5-a6ab-1590b78ecf9f" guard="BrakeIterator == 2 &amp;&amp; Speed &gt; 0" action="Speed := Speed - 1 | BrakeIterator := 0" label="BrakeIterator == 2 &amp;&amp; Speed &gt; 0 // Speed := Speed - 1 | BrakeIterator := 0" precondition="BrakeIterator == 2 &amp;&amp; Speed &gt; 0">
+          <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
+        </transition>
+      </successors>
+    </state>
   </states>
+  <variables>
+    <programGraphHasVariables Id="e95b3788-949c-40d8-9805-6a1f028c052c">
+      <variable Id="1b21c293-4843-4850-8258-27aa3b1bd1e3" name="BrakeIterator" range="0..2" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="6b4a76dd-8644-4266-b9ed-8c6f815bc7d7">
+      <variable Id="3b720174-de1d-4999-b875-7818d6e827e0" name="Deceleration" range="1" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="d3d9489d-58a4-4dfd-bd5b-cbd22304e7af">
+      <comment Id="c7240094-dfa7-4dd5-b3d6-974ac6aafd45" text="Modeling of a brake decelaeration of 1.5 m/s²: per cycle we want reduce the speed by 1.5 m/s. The entity for our speed is like 1 E = 5 m/s. So we can reduce the speed only at every third cycle. Therefore, we increment the BrakeIterator till he reach the value 2 and reduce the speed" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="53be0e5f-87c0-483b-87f9-177fc1e62c62">
+      <comment Id="820d8277-3a03-4a42-aedd-8fa6ce26420e" text="The ceceleration value = 1 is just a pseudo-value. The real value is 0.33" />
+    </programGraphHasComments>
+  </comments>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="ea0d0b02-c797-4b14-ac22-75ae9fabfd87">
+      <importedVariable Id="eec9d1b0-c718-4155-87f0-c49e5c977f65" name="TrainControl" range="Away, EP, AP, BP, Stop, GP, SP" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="96ea4330-1825-4618-87e9-6c80aac614c4">
+      <importedVariable Id="7a7c3109-fc03-4c97-b498-d6ae0f0b2ad3" name="TrainMotion.Speed" range="0..9" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
 </programGraph>

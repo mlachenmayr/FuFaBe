@@ -35,7 +35,7 @@
   </states>
   <importedVariables>
     <programGraphHasImportedVariables Id="f9b33524-f963-4b13-968c-0df4a1d3b614">
-      <importedVariable Id="54103e07-c443-475b-8181-8faaac52cbfc" name="TrainMotion.Position" range="0..60" />
+      <importedVariable Id="54103e07-c443-475b-8181-8faaac52cbfc" name="TrainMotion.Position" range="-100..1000" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>
