@@ -195,3 +195,35 @@ MODULE main
 		p_TrainRadioSender : _P_TrainRadioSender(v);
 
 
+
+
+-- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
+CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP))
+
+-- Check: when 
+CTLSPEC AG ((v.V_CommunicationMedium = L_MSG_Close) -> AX(v.V_CrossingRadioReceiver = L_ReceiveClose))
+-- selbiges f?r alle anderen NAchrichtenarten ....
+
+-- Check: Wenn die Schranke einen "Request" bekommen hat, sendet sie auch irgendwann einen "Response"
+LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
+
+-- Check: If train reaches SP, then the crossing will open sometime.
+LTLSPEC G (v.V_TrainControl = L_SP) -> F (v.V_Crossing = L_Opened)
+
+-- Check: Wird am Einschaltpunkt (EP) eine Nachricht versendet?
+LTLSPEC F(v.V_TrainControl = L_EP)
+LTLSPEC F(v.V_TrainControl = L_AP)
+
+LTLSPEC G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal)
+-- selbiges f?r AP
+LTLSPEC G (v.V_TrainControl = L_AP) -> F (v.V_TrainRadioSender = L_SendRequest)
+
+-- Check: gibt es einen Pfad, auf dem der Zug einen Request empf?ngt?
+
+-- Check: wenn die Zug-Steuerung in den Zustand "Stop" geht, muss die Notbremse (im n?chsten Step) aktiv sein
+
+-- Check: Geschwindigkeit wird nie erh?ht (?ber kompletten Verlauf hinweg)
+
+-- Check: nach Timer-Ablauf ?ffnet sich daraufhin die Schranke
+
+-- Check: OpeningSensor im Zustand Open -> es ?ffnet sich daraufhin die Schranke

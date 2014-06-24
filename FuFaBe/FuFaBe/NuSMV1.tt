@@ -3,3 +3,34 @@
 <#@ assembly Name="Safety.ProgramGraphDsl.dll" #> 
 
 <#=  TransformToNuSMV() #>
+
+-- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
+CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP))
+
+-- Check: when 
+CTLSPEC AG ((v.V_CommunicationMedium = L_MSG_Close) -> AX(v.V_CrossingRadioReceiver = L_ReceiveClose))
+-- selbiges für alle anderen NAchrichtenarten ....
+
+-- Check: Wenn die Schranke einen "Request" bekommen hat, sendet sie auch irgendwann einen "Response"
+LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
+
+-- Check: If train reaches SP, then the crossing will open sometime.
+LTLSPEC G (v.V_TrainControl = L_SP) -> F (v.V_Crossing = L_Opened)
+
+-- Check: Wird am Einschaltpunkt (EP) eine Nachricht versendet?
+LTLSPEC F(v.V_TrainControl = L_EP)
+LTLSPEC F(v.V_TrainControl = L_AP)
+
+LTLSPEC G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal)
+-- selbiges für AP
+LTLSPEC G (v.V_TrainControl = L_AP) -> F (v.V_TrainRadioSender = L_SendRequest)
+
+-- Check: gibt es einen Pfad, auf dem der Zug einen Request empfängt?
+
+-- Check: wenn die Zug-Steuerung in den Zustand "Stop" geht, muss die Notbremse (im nächsten Step) aktiv sein
+
+-- Check: Geschwindigkeit wird nie erhöht (über kompletten Verlauf hinweg)
+
+-- Check: nach Timer-Ablauf öffnet sich daraufhin die Schranke
+
+-- Check: OpeningSensor im Zustand Open -> es öffnet sich daraufhin die Schranke
