@@ -7,9 +7,9 @@
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
 CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP))
 
--- Check: when 
+-- Check: pruefe direkt zwischen Sender und Empfaenger (2 Takte!)
 CTLSPEC AG ((v.V_CommunicationMedium = L_MSG_Close) -> AX(v.V_CrossingRadioReceiver = L_ReceiveClose))
--- selbiges für alle anderen NAchrichtenarten ....
+-- selbiges fuer alle anderen NAchrichtenarten ....
 
 -- Check: Wenn die Schranke einen "Request" bekommen hat, sendet sie auch irgendwann einen "Response"
 LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
@@ -22,15 +22,20 @@ LTLSPEC F(v.V_TrainControl = L_EP)
 LTLSPEC F(v.V_TrainControl = L_AP)
 
 LTLSPEC G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal)
--- selbiges für AP
+-- selbiges fuer AP
 LTLSPEC G (v.V_TrainControl = L_AP) -> F (v.V_TrainRadioSender = L_SendRequest)
 
--- Check: gibt es einen Pfad, auf dem der Zug einen Request empfängt?
+-- Check: gibt es einen Pfad, auf dem der Zug einen Request empfaengt?
+CTLSPEC EF(v.V_TrainRadioReceiver = L_ReceiveResponse)
 
--- Check: wenn die Zug-Steuerung in den Zustand "Stop" geht, muss die Notbremse (im nächsten Step) aktiv sein
+-- Check: wenn die Zug-Steuerung in den Zustand "Stop" geht, muss die Notbremse (im naechsten Step) aktiv sein
+LTLSPEC G (v.V_TrainControl = L_Stop) -> X (v.V_EmergencyBreak = L_On)
 
--- Check: Geschwindigkeit wird nie erhöht (über kompletten Verlauf hinweg)
+-- Check: OpeningSensor im Zustand Open -> es oeffnet sich daraufhin die Schranke
+LTLSPEC G ((v.V_OpeningSensor = L_Open & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening))
 
--- Check: nach Timer-Ablauf öffnet sich daraufhin die Schranke
+-- Check: nach Timer-Ablauf oeffnet sich daraufhin die Schranke
+LTLSPEC G ((v.V_Timer = L_Timeout & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening))
 
--- Check: OpeningSensor im Zustand Open -> es öffnet sich daraufhin die Schranke
+-- Check: Geschwindigkeit wird nie erhoeht (ueber kompletten Verlauf hinweg)
+-- CTLSPEC AG (v.V_Speed >= AX v.V_Speed)
