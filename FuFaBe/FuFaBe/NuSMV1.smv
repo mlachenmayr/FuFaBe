@@ -22,10 +22,12 @@ MODULE _VARS
 		V_Position : -100..1000;
 		V_Time : 0..30;
 		V_SignalClosedCrossing : boolean;
-		V_z : {20};
+		V_z : {50};
 		V_c : {3};
 		V_TrainRadioReceiver : {L_Idle, L_ReceiveResponse};
 		V_TrainMotion : {L_Moving, L_Stopping};
+		V_VisitSCS : boolean;
+		V_VisitSR : boolean;
 	TRANS
 		next(V_ClosingTime) = V_ClosingTime & next(V_Deceleration) = V_Deceleration & next(V_z) = V_z & next(V_c) = V_c;
 MODULE _P_CommunicationMedium(v)
@@ -169,13 +171,13 @@ MODULE _P_TrainRadioReceiver(v)
 		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_Idle & !(v.V_CommunicationMedium = L_MSG_Response) & (TRUE));
 MODULE _P_TrainRadioSender(v)
 	INIT
-		(v.V_TrainRadioSender = L_Idle) & (TRUE)
+		(v.V_TrainRadioSender = L_Idle) & (((v.V_VisitSCS = FALSE) & (v.V_VisitSR = FALSE)))
 	TRANS
-		 ( v.V_TrainRadioSender = L_Idle & next(v.V_TrainRadioSender) = L_SendCloseSignal & (v.V_TrainControl = L_EP) & (TRUE))  |
-		 ( v.V_TrainRadioSender = L_Idle & next(v.V_TrainRadioSender) = L_SendRequest & (v.V_TrainControl = L_AP) & (TRUE))  |
-		 ( v.V_TrainRadioSender = L_SendCloseSignal & next(v.V_TrainRadioSender) = L_Idle & TRUE & (TRUE))  |
-		 ( v.V_TrainRadioSender = L_SendRequest & next(v.V_TrainRadioSender) = L_Idle & TRUE & (TRUE))  |
-		 ( v.V_TrainRadioSender = L_Idle & next(v.V_TrainRadioSender) = L_Idle & (!(v.V_TrainControl = L_EP) & !(v.V_TrainControl = L_AP)) & (TRUE));
+		 ( v.V_TrainRadioSender = L_Idle & next(v.V_TrainRadioSender) = L_SendCloseSignal & ((v.V_TrainControl = L_EP) & (v.V_VisitSCS = FALSE)) & (next(v.V_VisitSCS) = v.V_VisitSCS & next(v.V_VisitSR) = v.V_VisitSR))  |
+		 ( v.V_TrainRadioSender = L_Idle & next(v.V_TrainRadioSender) = L_SendRequest & ((v.V_TrainControl = L_AP) & (v.V_VisitSR = FALSE)) & (next(v.V_VisitSCS) = v.V_VisitSCS & next(v.V_VisitSR) = v.V_VisitSR))  |
+		 ( v.V_TrainRadioSender = L_SendCloseSignal & next(v.V_TrainRadioSender) = L_Idle & TRUE & (next(v.V_VisitSCS) = TRUE & next(v.V_VisitSR) = v.V_VisitSR))  |
+		 ( v.V_TrainRadioSender = L_SendRequest & next(v.V_TrainRadioSender) = L_Idle & TRUE & (next(v.V_VisitSR) = TRUE & next(v.V_VisitSCS) = v.V_VisitSCS))  |
+		 ( v.V_TrainRadioSender = L_Idle & next(v.V_TrainRadioSender) = L_Idle & (!((v.V_TrainControl = L_EP) & (v.V_VisitSCS = FALSE)) & !((v.V_TrainControl = L_AP) & (v.V_VisitSR = FALSE))) & (next(v.V_VisitSCS) = v.V_VisitSCS & next(v.V_VisitSR) = v.V_VisitSR));
 MODULE main
 	VAR
 		v : _VARS();
@@ -198,11 +200,13 @@ MODULE main
 
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
-CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP))
+CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP)) 
 
--- Check: pruefe direkt zwischen Sender und Empfaenger (2 Takte!)
-CTLSPEC AG ((v.V_CommunicationMedium = L_MSG_Close) -> AX(v.V_CrossingRadioReceiver = L_ReceiveClose))
--- selbiges fuer alle anderen NAchrichtenarten ....
+-- Check: Communication of different message types between sender and receiver
+LTLSPEC F(v.V_TrainRadioSender = L_SendCloseSignal) 
+CTLSPEC AG ((v.V_TrainRadioSender = L_SendCloseSignal) -> AX(AX(v.V_CrossingRadioReceiver = L_ReceiveClose)))
+CTLSPEC AG ((v.V_TrainRadioSender = L_SendRequest) -> AX(AX(v.V_CrossingRadioReceiver = L_ReceiveRequest)))
+CTLSPEC AG ((v.V_CrossingRadioSender = L_SendResponse) -> AX(AX(v.V_TrainRadioReceiver = L_ReceiveResponse)))
 
 -- Check: Wenn die Schranke einen "Request" bekommen hat, sendet sie auch irgendwann einen "Response"
 LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
@@ -210,12 +214,10 @@ LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioS
 -- Check: If train reaches SP, then the crossing will open sometime.
 LTLSPEC G (v.V_TrainControl = L_SP) -> F (v.V_Crossing = L_Opened)
 
--- Check: Wird am Einschaltpunkt (EP) eine Nachricht versendet?
+-- Check: The train must send messages at the EP and AP.
 LTLSPEC F(v.V_TrainControl = L_EP)
 LTLSPEC F(v.V_TrainControl = L_AP)
-
 LTLSPEC G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal)
--- selbiges fuer AP
 LTLSPEC G (v.V_TrainControl = L_AP) -> F (v.V_TrainRadioSender = L_SendRequest)
 
 -- Check: gibt es einen Pfad, auf dem der Zug einen Request empfaengt?

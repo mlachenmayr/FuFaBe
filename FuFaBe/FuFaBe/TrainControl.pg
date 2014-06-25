@@ -57,7 +57,7 @@
       <variable Id="ba978986-22c6-43df-992b-eaf6d70b0d72" name="SignalClosedCrossing" range="bool" />
     </programGraphHasVariables>
     <programGraphHasVariables Id="f42fd350-6170-4df1-8899-138c5fb40000">
-      <variable Id="686ef70f-403a-48c6-b4c9-a9f19cca78ba" name="z" range="20" />
+      <variable Id="686ef70f-403a-48c6-b4c9-a9f19cca78ba" name="z" range="50" />
     </programGraphHasVariables>
     <programGraphHasVariables Id="634399f1-56b0-40f9-af6f-841a3cd45f60">
       <variable Id="5ef20449-6759-478a-ace3-ffc854a9abd2" name="c" range="3" />
