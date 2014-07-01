@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="3ae1010e-4a87-4fc8-823d-8e1377299b28" name="TrainRadioReceiver" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="804eab4b-3454-4335-8953-ac6640168c00" name="InitialNode1">
+      <successors>
+        <transition Id="1e8957bb-2dfe-4277-9e25-b8cd6887b331">
+          <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="d9acf876-0bf1-4961-b0a9-312f86be4bac" name="Idle">
+      <successors>
+        <transition Id="4b465fe1-257f-4ab1-91bc-acc0158c6623" guard="CommunicationMedium == MSG_Response" label="CommunicationMedium == MSG_Response">
+          <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/ReceiveResponse" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="e3ed6215-2441-4523-95b0-caf43a5124d0" name="ReceiveResponse">
+      <successors>
+        <transition Id="36d685cb-779c-4bae-b9de-c21a05acb37e" guard="true" label="true">
+          <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/Idle" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="37741bec-5e32-4187-a87d-149e32f5633a">
+      <importedVariable Id="b816e2b9-17e9-465a-a706-6131663061a5" name="CommunicationMedium" range="Idle, MSG_Close, MSG_Request, MSG_Response" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

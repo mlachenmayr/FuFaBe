@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="ccdfe724-9dce-485d-9bd9-04426c9cd425" name="TrainMotion" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="9d25e80a-0bbf-41fc-b149-2cc6c5f9a1bb" name="InitialNode1">
+      <successors>
+        <transition Id="1d50608f-2d1d-4ece-8ef3-ef35e2d315fa" guard="Position == MAX_Position &amp;&amp; Speed == 9" label="Position == MAX_Position &amp;&amp; Speed == 9">
+          <stateMoniker name="/ccdfe724-9dce-485d-9bd9-04426c9cd425/Moving" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="2dc01d0c-4cb6-4282-9671-241abc0f3642" name="Moving">
+      <successors>
+        <transition Id="a99bf0e5-4acf-4166-8be5-9f0f77b93497" guard="Speed &gt; 0" action="Position := Position - Speed" label="Speed &gt; 0 // Position := Position - Speed" precondition="Position &gt; MIN_Position + Speed">
+          <stateMoniker name="/ccdfe724-9dce-485d-9bd9-04426c9cd425/Moving" />
+        </transition>
+        <transition Id="99134d06-e169-4a2b-a800-5da1341b2ab5" guard="Speed == 0" label="Speed == 0">
+          <stateMoniker name="/ccdfe724-9dce-485d-9bd9-04426c9cd425/Stopping" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="43d25c49-aba8-4764-9408-14fca4e63372" name="Stopping" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="7f315515-04d0-441a-af4d-cd711d0219d8">
+      <variable Id="ad508e39-2ee3-485a-8836-a64741fa0085" name="Position" range="-100..400" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="47f0b2c9-95a0-427c-95c7-3e2eddbe42a2">
+      <variable Id="26004c8f-bc20-480c-940d-cb5a51c7ac2a" name="Speed" range="0..9" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="4cb0218f-4309-42be-a1c0-666eb1925344">
+      <comment Id="2cb57183-028e-44fc-866d-24def4c0261c" text="The only program graph, that can write the Speed-variable is the EmergencyBreak" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="374e8d23-5bec-4297-bab3-82d9e8a42fb5">
+      <comment Id="d60e3469-6482-47a5-8d9a-f6c86ec456a7" text="Entity for the Speed-variable: 1 E = 5 m/s. A speed of 9 is like 45 m/s (160 km/h)" />
+    </programGraphHasComments>
+  </comments>
+  <macros>
+    <programGraphHasMacros Id="ec5bd492-e67b-47fa-9f79-955f05924173">
+      <macro Id="831745d8-be6f-4c06-8949-10ba864d04f5" name="MIN_Position" body="-100" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="1ba1d0c8-d94e-4542-a298-b19126ee2056">
+      <macro Id="21bf03cf-d944-4a74-bdb8-ed9a3df97073" name="MAX_Position" body="400" />
+    </programGraphHasMacros>
+  </macros>
+</programGraph>

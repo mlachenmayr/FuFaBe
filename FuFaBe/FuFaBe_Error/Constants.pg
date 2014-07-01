@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="4916609e-9e2e-49fe-8c40-c3b4920d3bb6" name="Constants" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="285c7a37-dc52-4fa0-9a14-1888a7aa93a4" name="InitialNode1">
+      <successors>
+        <transition Id="47f86136-34a0-4a7b-bb9c-eebefbca9804">
+          <stateMoniker name="/4916609e-9e2e-49fe-8c40-c3b4920d3bb6/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="8e57e9c1-7fe6-4810-afa1-36ce4d7cafa8" name="Idle" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="45881382-70ae-4e7d-a60a-c2c608c83a00">
+      <variable Id="b0c36b8c-513f-48db-9b13-a0bb605fb63f" name="z" range="50" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="50434bcd-f759-478c-957a-656136cab6f4">
+      <variable Id="cdcb806b-1249-4c02-8a36-02634b82491c" name="c" range="3" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="a7a3018d-7f48-47b9-819a-f47db3e678f5">
+      <variable Id="73572cec-0a0d-4032-9ec4-f459c28d5efc" name="sp_pos" range="-20" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="760506e6-faf8-4f4b-b236-00a0f395ddae">
+      <comment Id="af896b1a-0138-4357-a19d-7c54717a1b66" text="c = transmission time for communication" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="54f3836b-35df-4970-b4b4-6af9d8ca31cb">
+      <comment Id="adc8f01b-e779-4fe6-914c-f74420725a1b" text="z = security margin" />
+    </programGraphHasComments>
+  </comments>
+</programGraph>

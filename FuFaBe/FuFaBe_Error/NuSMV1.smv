@@ -1,10 +1,13 @@
- 
 
 MODULE _VARS
 	VAR
 		V_CommunicationMedium : {L_Idle, L_MSG_Close, L_MSG_Request, L_MSG_Response};
 		V_TrainRadioSender : {L_Idle, L_SendCloseSignal, L_SendRequest};
 		V_CrossingRadioSender : {L_Idle, L_SendResponse};
+		V_Constants : {L_Idle};
+		V_z : {50};
+		V_c : {3};
+		V_sp_pos : {-20};
 		V_Crossing : {L_Opened, L_Closing, L_Closed, L_Opening};
 		V_Angle : 0..90;
 		V_ClosingTime : {6};
@@ -17,19 +20,18 @@ MODULE _VARS
 		V_EmergencyBreak : {L_Off, L_On};
 		V_BrakeIterator : 0..2;
 		V_Deceleration : {1};
-		V_TrainControl : {L_Away, L_EP, L_AP, L_BP, L_Stop, L_GP, L_SP};
+		V_TrainControl : {L_Idle, L_EP, L_AP, L_BEP, L_Stop, L_Go};
 		V_Speed : 0..9;
-		V_Position : -100..1000;
+		V_Position : -100..400;
 		V_Time : 0..30;
 		V_SignalClosedCrossing : boolean;
-		V_z : {50};
-		V_c : {3};
+		V_TrainOdometer : {L_Away, L_EP, L_AP, L_BEP, L_GP, L_SP, L_OutOfScope};
 		V_TrainRadioReceiver : {L_Idle, L_ReceiveResponse};
 		V_TrainMotion : {L_Moving, L_Stopping};
 		V_VisitSCS : boolean;
 		V_VisitSR : boolean;
 	TRANS
-		next(V_ClosingTime) = V_ClosingTime & next(V_Deceleration) = V_Deceleration & next(V_z) = V_z & next(V_c) = V_c;
+		next(V_z) = V_z & next(V_c) = V_c & next(V_sp_pos) = V_sp_pos & next(V_ClosingTime) = V_ClosingTime & next(V_Deceleration) = V_Deceleration;
 MODULE _P_CommunicationMedium(v)
 	INIT
 		(v.V_CommunicationMedium = L_Idle) & (TRUE)
@@ -41,6 +43,11 @@ MODULE _P_CommunicationMedium(v)
 		 ( v.V_CommunicationMedium = L_MSG_Request & next(v.V_CommunicationMedium) = L_Idle & TRUE & (TRUE))  |
 		 ( v.V_CommunicationMedium = L_MSG_Response & next(v.V_CommunicationMedium) = L_Idle & TRUE & (TRUE))  |
 		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_Idle & (!(v.V_TrainRadioSender = L_SendCloseSignal) & (!(v.V_TrainRadioSender = L_SendRequest) & !(v.V_CrossingRadioSender = L_SendResponse))) & (TRUE));
+MODULE _P_Constants(v)
+	INIT
+		(v.V_Constants = L_Idle) & (TRUE)
+	TRANS
+		 ( v.V_Constants = L_Idle & next(v.V_Constants) = L_Idle & TRUE & (TRUE));
 MODULE _P_Crossing(v)
 	INIT
 		(v.V_Crossing = L_Opened) & ((v.V_Angle = 90))
@@ -120,11 +127,11 @@ MODULE _P_OpeningSensor(v)
 		(v.V_OpeningSensor = L_Idle) & (TRUE)
 	TRANS
 		 ( v.V_OpeningSensor = L_Idle & next(v.V_OpeningSensor) = L_Waitng & (v.V_Position = 0) & (TRUE))  |
-		 ( v.V_OpeningSensor = L_Waitng & next(v.V_OpeningSensor) = L_Open & (v.V_Position <= -50) & (TRUE))  |
-		 ( v.V_OpeningSensor = L_Waitng & next(v.V_OpeningSensor) = L_Waitng & (v.V_Position > -50) & (TRUE))  |
+		 ( v.V_OpeningSensor = L_Waitng & next(v.V_OpeningSensor) = L_Open & (v.V_Position <= v.V_sp_pos) & (TRUE))  |
+		 ( v.V_OpeningSensor = L_Waitng & next(v.V_OpeningSensor) = L_Waitng & (v.V_Position > v.V_sp_pos) & (TRUE))  |
 		 ( v.V_OpeningSensor = L_Open & next(v.V_OpeningSensor) = L_Idle & TRUE & (TRUE))  |
 		 ( v.V_OpeningSensor = L_Idle & next(v.V_OpeningSensor) = L_Idle & !(v.V_Position = 0) & (TRUE))  |
-		 ( v.V_OpeningSensor = L_Waitng & next(v.V_OpeningSensor) = L_Waitng & (!(v.V_Position <= -50) & !(v.V_Position > -50)) & (TRUE));
+		 ( v.V_OpeningSensor = L_Waitng & next(v.V_OpeningSensor) = L_Waitng & (!(v.V_Position <= v.V_sp_pos) & !(v.V_Position > v.V_sp_pos)) & (TRUE));
 MODULE _P_Timer(v)
 	INIT
 		(v.V_Timer = L_Idle) & (TRUE)
@@ -138,30 +145,45 @@ MODULE _P_Timer(v)
 		 ( v.V_Timer = L_Timeout & next(v.V_Timer) = L_Timeout & TRUE & (next(v.V_Time) = v.V_Time));
 MODULE _P_TrainControl(v)
 	INIT
-		(v.V_TrainControl = L_Away) & ((v.V_SignalClosedCrossing = FALSE))
+		(v.V_TrainControl = L_Idle) & ((v.V_SignalClosedCrossing = FALSE))
 	TRANS
-		 ( v.V_TrainControl = L_Away & next(v.V_TrainControl) = L_EP & (v.V_Position <= ((((v.V_Speed * (v.V_ClosingTime + v.V_c)) + ((2 * v.V_c) * v.V_Speed)) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_EP & next(v.V_TrainControl) = L_AP & (v.V_Position <= ((((2 * v.V_c) * v.V_Speed) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_AP & next(v.V_TrainControl) = L_BP & (v.V_Position <= (v.V_z + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_Idle & next(v.V_TrainControl) = L_EP & (v.V_TrainOdometer = L_EP) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_EP & next(v.V_TrainControl) = L_AP & (v.V_TrainOdometer = L_AP) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_AP & next(v.V_TrainControl) = L_BEP & (v.V_TrainOdometer = L_BEP) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
 		 ( v.V_TrainControl = L_AP & next(v.V_TrainControl) = L_AP & ((v.V_TrainRadioReceiver = L_ReceiveResponse) & (v.V_SignalClosedCrossing = FALSE)) & (next(v.V_SignalClosedCrossing) = TRUE))  |
-		 ( v.V_TrainControl = L_BP & next(v.V_TrainControl) = L_Stop & (v.V_SignalClosedCrossing = FALSE) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_BP & next(v.V_TrainControl) = L_GP & (v.V_Position = 0) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_GP & next(v.V_TrainControl) = L_SP & (v.V_Position = -10) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_Away & next(v.V_TrainControl) = L_Away & !(v.V_Position <= ((((v.V_Speed * (v.V_ClosingTime + v.V_c)) + ((2 * v.V_c) * v.V_Speed)) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_EP & next(v.V_TrainControl) = L_EP & !(v.V_Position <= ((((2 * v.V_c) * v.V_Speed) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_AP & next(v.V_TrainControl) = L_AP & (!(v.V_Position <= (v.V_z + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & !((v.V_TrainRadioReceiver = L_ReceiveResponse) & (v.V_SignalClosedCrossing = FALSE))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_BP & next(v.V_TrainControl) = L_BP & (!(v.V_SignalClosedCrossing = FALSE) & !(v.V_Position = 0)) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_BEP & next(v.V_TrainControl) = L_Stop & (v.V_SignalClosedCrossing = FALSE) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_BEP & next(v.V_TrainControl) = L_Go & (v.V_SignalClosedCrossing = TRUE) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_Idle & next(v.V_TrainControl) = L_Idle & !(v.V_TrainOdometer = L_EP) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_EP & next(v.V_TrainControl) = L_EP & !(v.V_TrainOdometer = L_AP) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_AP & next(v.V_TrainControl) = L_AP & (!(v.V_TrainOdometer = L_BEP) & !((v.V_TrainRadioReceiver = L_ReceiveResponse) & (v.V_SignalClosedCrossing = FALSE))) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
+		 ( v.V_TrainControl = L_BEP & next(v.V_TrainControl) = L_BEP & (!(v.V_SignalClosedCrossing = FALSE) & !(v.V_SignalClosedCrossing = TRUE)) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
 		 ( v.V_TrainControl = L_Stop & next(v.V_TrainControl) = L_Stop & TRUE & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_GP & next(v.V_TrainControl) = L_GP & !(v.V_Position = -10) & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing))  |
-		 ( v.V_TrainControl = L_SP & next(v.V_TrainControl) = L_SP & TRUE & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing));
+		 ( v.V_TrainControl = L_Go & next(v.V_TrainControl) = L_Go & TRUE & (next(v.V_SignalClosedCrossing) = v.V_SignalClosedCrossing));
 MODULE _P_TrainMotion(v)
 	INIT
-		(v.V_TrainMotion = L_Moving) & (((v.V_Position = 1000) & (v.V_Speed = 9)))
+		(v.V_TrainMotion = L_Moving) & (((v.V_Position = 400) & (v.V_Speed = 9)))
 	TRANS
 		 ( v.V_TrainMotion = L_Moving & next(v.V_TrainMotion) = L_Moving & ((v.V_Speed > 0) & (v.V_Position > (-100 + v.V_Speed))) & (next(v.V_Position) = (v.V_Position - v.V_Speed)))  |
 		 ( v.V_TrainMotion = L_Moving & next(v.V_TrainMotion) = L_Stopping & (v.V_Speed = 0) & (next(v.V_Position) = v.V_Position))  |
 		 ( v.V_TrainMotion = L_Moving & next(v.V_TrainMotion) = L_Moving & (!((v.V_Speed > 0) & (v.V_Position > (-100 + v.V_Speed))) & !(v.V_Speed = 0)) & (next(v.V_Position) = v.V_Position))  |
 		 ( v.V_TrainMotion = L_Stopping & next(v.V_TrainMotion) = L_Stopping & TRUE & (next(v.V_Position) = v.V_Position));
+MODULE _P_TrainOdometer(v)
+	INIT
+		(v.V_TrainOdometer = L_Away) & (TRUE)
+	TRANS
+		 ( v.V_TrainOdometer = L_Away & next(v.V_TrainOdometer) = L_EP & (v.V_Position <= ((((v.V_Speed * (v.V_ClosingTime + v.V_c)) + ((2 * v.V_c) * v.V_Speed)) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_EP & next(v.V_TrainOdometer) = L_AP & (v.V_Position <= ((((2 * v.V_c) * v.V_Speed) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_AP & next(v.V_TrainOdometer) = L_BEP & (v.V_Position <= (v.V_z + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_BEP & next(v.V_TrainOdometer) = L_GP & (v.V_Position <= 0) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_GP & next(v.V_TrainOdometer) = L_SP & (v.V_Position <= v.V_sp_pos) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_SP & next(v.V_TrainOdometer) = L_OutOfScope & (v.V_Position <= -50) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_Away & next(v.V_TrainOdometer) = L_Away & !(v.V_Position <= ((((v.V_Speed * (v.V_ClosingTime + v.V_c)) + ((2 * v.V_c) * v.V_Speed)) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_EP & next(v.V_TrainOdometer) = L_EP & !(v.V_Position <= ((((2 * v.V_c) * v.V_Speed) + v.V_z) + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_AP & next(v.V_TrainOdometer) = L_AP & !(v.V_Position <= (v.V_z + ((((v.V_Speed * v.V_Speed) * 3) / 2) * v.V_Deceleration))) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_BEP & next(v.V_TrainOdometer) = L_BEP & !(v.V_Position <= 0) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_GP & next(v.V_TrainOdometer) = L_GP & !(v.V_Position <= v.V_sp_pos) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_SP & next(v.V_TrainOdometer) = L_SP & !(v.V_Position <= -50) & (TRUE))  |
+		 ( v.V_TrainOdometer = L_OutOfScope & next(v.V_TrainOdometer) = L_OutOfScope & TRUE & (TRUE));
 MODULE _P_TrainRadioReceiver(v)
 	INIT
 		(v.V_TrainRadioReceiver = L_Idle) & (TRUE)
@@ -182,6 +204,7 @@ MODULE main
 	VAR
 		v : _VARS();
 		p_CommunicationMedium : _P_CommunicationMedium(v);
+		p_Constants : _P_Constants(v);
 		p_Crossing : _P_Crossing(v);
 		p_CrossingControl : _P_CrossingControl(v);
 		p_CrossingMotor : _P_CrossingMotor(v);
@@ -193,8 +216,10 @@ MODULE main
 		p_Timer : _P_Timer(v);
 		p_TrainControl : _P_TrainControl(v);
 		p_TrainMotion : _P_TrainMotion(v);
+		p_TrainOdometer : _P_TrainOdometer(v);
 		p_TrainRadioReceiver : _P_TrainRadioReceiver(v);
 		p_TrainRadioSender : _P_TrainRadioSender(v);
+
 
 
 
@@ -214,7 +239,7 @@ CTLSPEC AG ((v.V_CrossingRadioSender = L_SendResponse) -> AX(AX(v.V_TrainRadioRe
 LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
 
 -- Check: If train reaches SP, then the crossing will open sometime.
-LTLSPEC G (v.V_TrainControl = L_SP) -> F (v.V_Crossing = L_Opened)
+LTLSPEC G (v.V_TrainControl = L_Go) -> F (v.V_Crossing = L_Opened)
 
 -- Check: The train must send messages at the EP and AP.
 LTLSPEC F(v.V_TrainControl = L_EP)

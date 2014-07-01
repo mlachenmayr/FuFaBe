@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="267312bf-b506-42a1-90bd-4cea85c1076b" name="CrossingMotor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="1842af16-aa55-428d-8678-0ae660bb9329" name="InitialNode1">
+      <successors>
+        <transition Id="a66b93c0-8904-491b-b02d-b2fe5785c865">
+          <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Off" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="10c29982-2c4e-4530-8cba-7c8de92b4647" name="Off">
+      <successors>
+        <transition Id="f833a67e-cb5e-4da8-92ee-678eccd97719" guard="CrossingControl == Closing" label="CrossingControl == Closing">
+          <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Down" />
+        </transition>
+        <transition Id="a085b128-e3ab-4907-a8b6-de28eae3ed26" guard="CrossingControl == Opening" label="CrossingControl == Opening">
+          <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Up" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="b5beae7a-e173-4675-9e77-4376dce539d4" name="Down">
+      <successors>
+        <transition Id="03c9cd2f-a011-4d69-bea5-3c2aad97210e" guard="CrossingControl == Closed" label="CrossingControl == Closed">
+          <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Off" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="d38168c3-e397-430a-ba45-4a55855700fa" name="Up">
+      <successors>
+        <transition Id="0b49a15c-faf6-415b-9d5b-fe44fe52899f" guard="CrossingControl == Opened" label="CrossingControl == Opened">
+          <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Off" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="de156878-209e-43aa-94a7-7121e6c6a66b">
+      <importedVariable Id="a2837f9d-37d8-4d95-93b0-a3e2ecb56fe4" name="CrossingControl" range="Idle, Closing, Opening, Closed, Opened" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

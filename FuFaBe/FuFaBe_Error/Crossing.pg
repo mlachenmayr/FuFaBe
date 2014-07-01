@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12" name="Crossing" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="7555f14d-b04b-4d40-8f3f-b22653b61a34" name="InitialNode1">
+      <successors>
+        <transition Id="3a2d6166-6723-4bdd-b0e0-89bdace3f7ae" guard="Angle == 90" label="Angle == 90">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Opened" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="4867da22-5453-4c76-b697-e2cef5602374" name="Opened">
+      <successors>
+        <transition Id="0a6a5018-10c1-422f-b1bf-3150ccd29927" guard="CrossingMotor == Down" label="CrossingMotor == Down">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Closing" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="70bcba7f-3e28-4c38-8e1a-0130173f4a59" name="Closing">
+      <successors>
+        <transition Id="50bc0851-e59f-4db4-b50e-08236448ff16" guard="Angle == CLOSED_Angle" label="Angle == CLOSED_Angle">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Closed" />
+        </transition>
+        <transition Id="67673eb3-30c9-4e43-856f-f1997e011261" guard="CrossingMotor == Down &amp;&amp; Angle &gt; CLOSED_Angle" action="Angle := Angle - DELTA_Angle" label="CrossingMotor == Down &amp;&amp; Angle &gt; CLOSED_Angle // Angle := Angle - DELTA_Angle" precondition="Angle &gt;= DELTA_Angle">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Closing" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="b99190ed-816d-4793-89f3-9377e628dc6b" name="Closed">
+      <successors>
+        <transition Id="55765afb-b8ff-477d-9803-8497980b9a69" guard="CrossingMotor == Up" label="CrossingMotor == Up">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Opening" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="c535d0bd-f261-4583-8e57-6a9e69bc5ca2" name="Opening">
+      <successors>
+        <transition Id="0cfb3fa7-8e27-4d50-abdc-eb8917150a77" guard="Angle == OPENED_Angle" label="Angle == OPENED_Angle">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Opened" />
+        </transition>
+        <transition Id="bbc3f5cb-5084-4dd2-ba14-46b5e72b4f6d" guard="CrossingMotor == Up &amp;&amp; Angle &lt; OPENED_Angle" action="Angle := Angle + DELTA_Angle" label="CrossingMotor == Up &amp;&amp; Angle &lt; OPENED_Angle // Angle := Angle + DELTA_Angle" precondition="Angle + DELTA_Angle &lt;= OPENED_Angle">
+          <stateMoniker name="/aac8362e-10a0-48fd-8dc8-ef0b4f7fbe12/Opening" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <variables>
+    <programGraphHasVariables Id="5e73d851-c62f-4d0a-9c43-527c1ac4eca2">
+      <variable Id="729e7c1c-3a96-4c10-bb58-6444a8c56246" name="Angle" range="0..90" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="f8aaa3d4-7419-4cc5-8c5e-73819baca021">
+      <variable Id="fbdc6b70-021b-4618-8824-03986851b277" name="ClosingTime" range="6" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="f6f1dafd-e759-40fd-9a44-a9b80c3269d3">
+      <comment Id="5fa6f994-e7a6-4b1c-bfc9-b97a9115b3cb" text="Opened &#xD;&#xA;Angle = 90 Grad" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="189f7421-0bcf-4194-b6f3-1c6e1d4f20b1">
+      <comment Id="7ce374b4-b272-4934-b959-9bb67537499e" text="Closed&#xD;&#xA;Angle = 0 Grad" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="ddd45b35-11af-4ff1-82fb-680af6ef1f26">
+      <comment Id="433fd538-5fe0-4ec3-b4c6-ef3e29c139c7" text="Time for opening or closing the crossing: 6 secs." />
+    </programGraphHasComments>
+  </comments>
+  <macros>
+    <programGraphHasMacros Id="5a54c3a4-fc41-4ece-b9f2-8326956e36ca">
+      <macro Id="0394cd1f-a8a8-417e-b0b6-e934ed726d8e" name="CLOSED_Angle" body="0" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="9eef5543-b16e-4793-ae6f-cb5f8a2ff79b">
+      <macro Id="849b4c11-ccba-46e6-a7d2-9f587aeb9c5c" name="OPENED_Angle" body="90" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="c9139ec1-c61e-4b4f-bd71-5e59e81c8ded">
+      <macro Id="496e76c4-9001-483d-bb94-1f9d4f305f36" name="DELTA_Angle" body="15" />
+    </programGraphHasMacros>
+  </macros>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="6ebe5c99-6150-48bc-a093-4c4dd796a855">
+      <importedVariable Id="afa95f71-e638-46c9-8892-86eb7cb8e661" name="CrossingMotor" range="Off, Down, Up" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="e718da2f-fac7-4c57-b622-0fc578751565" name="TrainControl" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="d7482d81-3203-4330-a797-98918fa304de" name="InitialNode1">
+      <successors>
+        <transition Id="33734852-f618-4aea-8b82-5f7e86631cd3" guard="SignalClosedCrossing == false" label="SignalClosedCrossing == false">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="381a0135-7586-4bed-80fe-27805c2b57b4" name="Idle">
+      <successors>
+        <transition Id="5909bbfa-ad7b-4825-869c-50f1a0a44f13" guard="TrainOdometer == EP" label="TrainOdometer == EP">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/EP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="0cafd155-6db2-47b7-8672-5afa9661e0c9" name="EP">
+      <successors>
+        <transition Id="a94b7c97-f8b4-49f5-aff0-93a9eff58926" guard="TrainOdometer == AP" label="TrainOdometer == AP">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/AP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="0481408b-8de2-4a86-86f2-0ebc36ed1d9a" name="AP">
+      <successors>
+        <transition Id="1e34109f-c0c0-4b27-8998-39f6ef208dd8" guard="TrainOdometer == BEP" label="TrainOdometer == BEP">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/BEP" />
+        </transition>
+        <transition Id="07355c1a-a0a0-44f2-9325-d6fe9afee943" guard="TrainRadioReceiver == ReceiveResponse" action="SignalClosedCrossing := true" label="TrainRadioReceiver == ReceiveResponse // SignalClosedCrossing := true" precondition="SignalClosedCrossing == false">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/AP" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="e6decd3b-688e-4316-9055-446ae0c1c674" name="BEP">
+      <successors>
+        <transition Id="92232c08-6aab-41b5-b8ec-7484123e751c" guard="SignalClosedCrossing == false" label="SignalClosedCrossing == false">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Stop" />
+        </transition>
+        <transition Id="af7a95a7-3c30-491c-a927-d912cdedd826" guard="SignalClosedCrossing == true" label="SignalClosedCrossing == true">
+          <stateMoniker name="/e718da2f-fac7-4c57-b622-0fc578751565/Go" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="fb5e3ef8-3b89-4537-a563-1b4dee32dd97" name="Stop" />
+    <state Id="a7a4408e-b812-4f1c-a991-850d66b10e33" name="Go" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="4905c99b-1258-4a5a-835f-8cb3e84f4822">
+      <variable Id="ba978986-22c6-43df-992b-eaf6d70b0d72" name="SignalClosedCrossing" range="bool" />
+    </programGraphHasVariables>
+  </variables>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="cdb0e2a8-d067-4c81-8507-569a3328cfdb">
+      <importedVariable Id="e6e6833b-7f0e-45e6-9aae-023488838ecd" name="TrainOdometer" range="Away, EP, AP, BEP, GP, SP, OutOfScope" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="865cf627-2ad4-460d-b3a5-97ebc93de669">
+      <importedVariable Id="d5eac6df-d7b4-4bf9-ac99-da3bd7c50916" name="TrainRadioReceiver" range="Idle, ReceiveResponse" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

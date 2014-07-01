@@ -1,8 +1,9 @@
 ﻿<#@ template inherits="Safety.ProgramGraphDsl.ProgramGraphTransformation" hostspecific="true" #>
 <#@ output encoding="us-ascii" extension=".smv" #>
-<#@ assembly Name="Safety.ProgramGraphDsl.dll" #> 
+<#@ assembly Name="Safety.ProgramGraphDsl.dll" #>
 
 <#=  TransformToNuSMV() #>
+
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
 CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP)) 
@@ -19,7 +20,7 @@ CTLSPEC AG ((v.V_CrossingRadioSender = L_SendResponse) -> AX(AX(v.V_TrainRadioRe
 LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
 
 -- Check: If train reaches SP, then the crossing will open sometime.
-LTLSPEC G (v.V_TrainControl = L_SP) -> F (v.V_Crossing = L_Opened)
+LTLSPEC G (v.V_TrainControl = L_Go) -> F (v.V_Crossing = L_Opened)
 
 -- Check: The train must send messages at the EP and AP.
 LTLSPEC F(v.V_TrainControl = L_EP)
