@@ -3,25 +3,31 @@
   <states>
     <initialNode Id="c15c7abd-7174-496d-8275-33675a0f044b" name="InitialNode1">
       <successors>
-        <transition Id="92c1bb44-875d-46fa-8292-20de4e778e1b" guard="BrakeIterator ==0" label="BrakeIterator ==0">
+        <transition Id="92c1bb44-875d-46fa-8292-20de4e778e1b" guard="BrakeIterator == 0" label="BrakeIterator == 0">
           <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/Off" />
         </transition>
       </successors>
     </initialNode>
     <state Id="51d53f89-9e72-4936-b689-a988c5656697" name="Off">
       <successors>
-        <transition Id="9a0b1f53-7807-47b2-9c22-f0989296dea2" guard="TrainControl == Stop" label="TrainControl == Stop">
+        <transition Id="9a0b1f53-7807-47b2-9c22-f0989296dea2" guard="TrainControl == Stop &amp;&amp; F01_EmergencyBrake == NO" label="TrainControl == Stop &amp;&amp; F01_EmergencyBrake == NO">
           <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
+        </transition>
+        <transition Id="003e5f72-9245-4c79-a82f-717ae1752f1b" guard="F01_EmergencyBrake == YES" label="F01_EmergencyBrake == YES">
+          <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/Off" />
         </transition>
       </successors>
     </state>
     <state Id="bdf5cc38-1f6d-4c50-b0dd-a1378b1ef7b7" name="On">
       <successors>
-        <transition Id="6b1fe93c-3980-49c1-ad01-4f9285d61b46" guard="BrakeIterator &lt; 2" action="BrakeIterator := BrakeIterator + 1" label="BrakeIterator &lt; 2 // BrakeIterator := BrakeIterator + 1" precondition="BrakeIterator &lt; 2">
+        <transition Id="6b1fe93c-3980-49c1-ad01-4f9285d61b46" guard="BrakeIterator &lt; 2 &amp;&amp; F01_EmergencyBrake == NO" action="BrakeIterator := BrakeIterator + 1" label="BrakeIterator &lt; 2 &amp;&amp; F01_EmergencyBrake == NO // BrakeIterator := BrakeIterator + 1" precondition="BrakeIterator &lt; 2">
           <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
         </transition>
-        <transition Id="7cbe938f-c242-46c5-a6ab-1590b78ecf9f" guard="BrakeIterator == 2 &amp;&amp; Speed &gt; 0" action="Speed := Speed - 1 | BrakeIterator := 0" label="BrakeIterator == 2 &amp;&amp; Speed &gt; 0 // Speed := Speed - 1 | BrakeIterator := 0" precondition="BrakeIterator == 2 &amp;&amp; Speed &gt; 0">
+        <transition Id="7cbe938f-c242-46c5-a6ab-1590b78ecf9f" guard="BrakeIterator == 2 &amp;&amp; Speed &gt; 0 &amp;&amp; F01_EmergencyBrake == NO" action="Speed := Speed - 1 | BrakeIterator := 0" label="BrakeIterator == 2 &amp;&amp; Speed &gt; 0 &amp;&amp; F01_EmergencyBrake == NO // Speed := Speed - 1 | BrakeIterator := 0" precondition="BrakeIterator == 2 &amp;&amp; Speed &gt; 0">
           <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/On" />
+        </transition>
+        <transition Id="edfb582a-a1b0-4314-a8dc-b0573fa5d33f" guard="F01_EmergencyBrake == YES" label="F01_EmergencyBrake == YES">
+          <stateMoniker name="/a41212b7-71f4-444a-88a8-7dc01f032279/Off" />
         </transition>
       </successors>
     </state>
@@ -48,6 +54,9 @@
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="96ea4330-1825-4618-87e9-6c80aac614c4">
       <importedVariable Id="7a7c3109-fc03-4c97-b498-d6ae0f0b2ad3" name="TrainMotion.Speed" range="0..9" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="329414dd-4af4-4e4e-a263-4f11c1cbef12">
+      <importedVariable Id="8a00601d-cf57-4a15-b2ed-f4f36f539b0c" name="F01_EmergencyBrake" range="NO, YES" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

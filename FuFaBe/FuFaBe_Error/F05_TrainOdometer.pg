@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="6c604a91-40b2-4103-b95f-d6259bc94397" name="F05_TrainOdometer" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="ef82c4c8-7b83-4e0d-87d9-ace2e7908604" name="InitialNode1">
+      <successors>
+        <transition Id="349c165b-c203-47ae-a1b9-a797dcfd4cb2">
+          <stateMoniker name="/6c604a91-40b2-4103-b95f-d6259bc94397/NO" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="49f17258-e9d0-4baa-aa36-05a8fb83a288" name="NO">
+      <successors>
+        <transition Id="3b704f80-d0f6-4896-9f2e-f659cec73c16" guard="F05 == true" label="F05 == true">
+          <stateMoniker name="/6c604a91-40b2-4103-b95f-d6259bc94397/YES" />
+        </transition>
+        <transition Id="8d09d936-f45d-42ad-bc4d-0e4ce1bdd61d">
+          <stateMoniker name="/6c604a91-40b2-4103-b95f-d6259bc94397/NO" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="4e2134f0-e7e1-4e8a-a89a-add9a47590c7" name="YES">
+      <successors>
+        <transition Id="18aa2901-0a94-4925-821c-47c38a50c13f">
+          <stateMoniker name="/6c604a91-40b2-4103-b95f-d6259bc94397/NO" />
+        </transition>
+        <transition Id="d0fa5572-ede8-4815-b3fe-02b7bef45f9f">
+          <stateMoniker name="/6c604a91-40b2-4103-b95f-d6259bc94397/YES" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="8e447863-c8ff-4f16-a850-6a0e9b2a7f62">
+      <importedVariable Id="8436ef1b-54d1-4233-bd47-1d5ff55b7b7d" name="FailureController.F05" range="bool" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

@@ -10,43 +10,58 @@
     </initialNode>
     <state Id="39941d59-b642-4316-8b5d-f2fff7ddb631" name="Away">
       <successors>
-        <transition Id="c08f9c5f-1621-4b7f-aa73-5f7947c9b045" guard="Position &lt;=EP_CALC + AP_CALC + BEP_CALC" label="Position &lt;=EP_CALC + AP_CALC + BEP_CALC">
+        <transition Id="c08f9c5f-1621-4b7f-aa73-5f7947c9b045" guard="Position &lt;=EP_CALC + AP_CALC + BEP_CALC || Defect" label="Position &lt;=EP_CALC + AP_CALC + BEP_CALC || Defect">
           <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/EP" />
         </transition>
       </successors>
     </state>
     <state Id="2eb6a765-331a-40af-9a5e-f3cb33bcec0e" name="EP">
       <successors>
-        <transition Id="1a0ff262-3ba0-4049-87eb-b757568ed8cf" guard="Position &lt;= AP_CALC + BEP_CALC" label="Position &lt;= AP_CALC + BEP_CALC">
+        <transition Id="1a0ff262-3ba0-4049-87eb-b757568ed8cf" guard="Position &lt;= AP_CALC + BEP_CALC || Defect" label="Position &lt;= AP_CALC + BEP_CALC || Defect">
           <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/AP" />
+        </transition>
+        <transition Id="93fececc-b786-4a63-81fa-7bc1e9e700bf" guard="Defect" label="Defect">
+          <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/EP" />
         </transition>
       </successors>
     </state>
     <state Id="4ffa0247-411a-4674-9e8f-7a4335efea80" name="AP">
       <successors>
-        <transition Id="e931e97f-a485-4d28-9de8-7e149b7c3362" guard="Position &lt;= BEP_CALC" label="Position &lt;= BEP_CALC">
+        <transition Id="e931e97f-a485-4d28-9de8-7e149b7c3362" guard="Position &lt;= BEP_CALC  || Defect" label="Position &lt;= BEP_CALC  || Defect">
           <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/BEP" />
+        </transition>
+        <transition Id="a8572e27-48ab-4a62-a630-b524383a472b" guard="Defect" label="Defect">
+          <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/AP" />
         </transition>
       </successors>
     </state>
     <state Id="688ba65c-ad82-4144-9dbb-04cbd316857a" name="BEP">
       <successors>
-        <transition Id="a40ba1dd-2faf-4a9d-9b36-7506c58a5670" guard="Position &lt;= 0" label="Position &lt;= 0">
+        <transition Id="a40ba1dd-2faf-4a9d-9b36-7506c58a5670" guard="Position &lt;= 0  || Defect" label="Position &lt;= 0  || Defect">
           <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/GP" />
+        </transition>
+        <transition Id="ce408eb8-e7ff-41af-aeab-d7ffe5f547f3" guard="Defect" label="Defect">
+          <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/BEP" />
         </transition>
       </successors>
     </state>
     <state Id="d49fddde-6bc6-44c6-92f4-226bb65678ef" name="GP">
       <successors>
-        <transition Id="a66486ab-5a1a-4a89-9c9b-82013160dcc2" guard="Position &lt;= sp_pos" label="Position &lt;= sp_pos">
+        <transition Id="a66486ab-5a1a-4a89-9c9b-82013160dcc2" guard="Position &lt;= sp_pos  || Defect" label="Position &lt;= sp_pos  || Defect">
           <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/SP" />
+        </transition>
+        <transition Id="057be01f-2a22-4124-9a16-1f67da269f3b" guard="Defect" label="Defect">
+          <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/GP" />
         </transition>
       </successors>
     </state>
     <state Id="eb24e229-06da-42d1-bf20-93bf49fca6fa" name="SP">
       <successors>
-        <transition Id="a45d7546-c15d-4e10-ba6e-8be15deba1a6" guard="Position &lt;= -50" label="Position &lt;= -50">
+        <transition Id="a45d7546-c15d-4e10-ba6e-8be15deba1a6" guard="Position &lt;= -50  || Defect" label="Position &lt;= -50  || Defect">
           <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/OutOfScope" />
+        </transition>
+        <transition Id="da3c7ca6-3092-4dd5-aff6-c4bf43ac482c" guard="Defect" label="Defect">
+          <stateMoniker name="/6f6511ed-c6ce-4e99-85be-d7de31759f18/SP" />
         </transition>
       </successors>
     </state>
@@ -66,6 +81,12 @@
     </programGraphHasMacros>
     <programGraphHasMacros Id="52556b7a-2dac-40af-bfda-f6a2640387b8">
       <macro Id="38e0b4c7-7ab7-4fa2-a822-fc0ed5ff5e32" name="EP_CALC" body="Speed * (ClosingTime + c)" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="fa41eb11-4137-4117-9914-23bdb0ad1181">
+      <macro Id="f734f1ef-0ff6-49d9-80a8-acaad19ac5bd" name="NoDefect" body="F05_TrainOdometer == NO" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="10dd92a8-ae94-4327-bcf1-27a98195c79d">
+      <macro Id="2a49416f-9f5b-491b-a3ec-fb19105ec13c" name="Defect" body="F05_TrainOdometer == YES" />
     </programGraphHasMacros>
   </macros>
   <importedVariables>
@@ -89,6 +110,9 @@
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="f6f27e40-91cf-4561-8610-0ce3f8d947be">
       <importedVariable Id="ef37f81c-42a0-4b22-b462-7a1f6c9ea93b" name="Constants.sp_pos" range="-20" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="5c057192-d1c1-4da8-8bc4-a23842200724">
+      <importedVariable Id="5a2eef0b-1c2c-4054-8ece-1764cec98b97" name="F05_TrainOdometer" range="NO, YES" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

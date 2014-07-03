@@ -10,8 +10,11 @@
     </initialNode>
     <state Id="d9acf876-0bf1-4961-b0a9-312f86be4bac" name="Idle">
       <successors>
-        <transition Id="4b465fe1-257f-4ab1-91bc-acc0158c6623" guard="CommunicationMedium == MSG_Response" label="CommunicationMedium == MSG_Response">
+        <transition Id="4b465fe1-257f-4ab1-91bc-acc0158c6623" guard="CommunicationMedium == MSG_Response &amp;&amp; F02_TrainRadioReceiver == NO" label="CommunicationMedium == MSG_Response &amp;&amp; F02_TrainRadioReceiver == NO">
           <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/ReceiveResponse" />
+        </transition>
+        <transition Id="64b92cce-a031-41a9-a757-697c963679dd" guard="F02_TrainRadioReceiver == YES" label="F02_TrainRadioReceiver == YES">
+          <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/Idle" />
         </transition>
       </successors>
     </state>
@@ -26,6 +29,9 @@
   <importedVariables>
     <programGraphHasImportedVariables Id="37741bec-5e32-4187-a87d-149e32f5633a">
       <importedVariable Id="b816e2b9-17e9-465a-a706-6131663061a5" name="CommunicationMedium" range="Idle, MSG_Close, MSG_Request, MSG_Response" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="d252d323-fd3e-4d54-94f4-36c055c9df34">
+      <importedVariable Id="097391ae-a468-4719-902c-707185910c92" name="F02_TrainRadioReceiver" range="NO, YES" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

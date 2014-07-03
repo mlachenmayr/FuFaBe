@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="a431afd0-1bf1-44cd-bbb0-11e8925a34ee" name="F06_CommunicationMedium" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="9abf2574-6caf-44c1-a976-08731c435a20" name="InitialNode1">
+      <successors>
+        <transition Id="1c5ee2e7-e4fd-41bf-b917-8ede1189ea37">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/NO" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="0df526cb-a14b-4f8b-94c6-0ebaca377ce1" name="NO">
+      <successors>
+        <transition Id="d879ae28-678a-409a-825b-d7a7824bb3b9">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/YES" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="49903a85-a37e-4df4-b0de-a5b8e52bac01" name="YES">
+      <successors>
+        <transition Id="942e1269-9eec-403b-962a-cbd0f05c0831">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/NO" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+</programGraph>

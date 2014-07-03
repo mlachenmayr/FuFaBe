@@ -81,6 +81,34 @@
     <None Include="EmergencyBreak.pg.diagram">
       <DependentUpon>EmergencyBreak.pg</DependentUpon>
     </None>
+    <None Include="F01_EmergencyBrake.pg" />
+    <None Include="F01_EmergencyBrake.pg.diagram">
+      <DependentUpon>F01_EmergencyBrake.pg</DependentUpon>
+    </None>
+    <None Include="F02_TrainRadioReceiver.pg" />
+    <None Include="F02_TrainRadioReceiver.pg.diagram">
+      <DependentUpon>F02_TrainRadioReceiver.pg</DependentUpon>
+    </None>
+    <None Include="F03_CrossingMotor.pg" />
+    <None Include="F03_CrossingMotor.pg.diagram">
+      <DependentUpon>F03_CrossingMotor.pg</DependentUpon>
+    </None>
+    <None Include="F04_OpeningSensor.pg" />
+    <None Include="F04_OpeningSensor.pg.diagram">
+      <DependentUpon>F04_OpeningSensor.pg</DependentUpon>
+    </None>
+    <None Include="F05_TrainOdometer.pg" />
+    <None Include="F05_TrainOdometer.pg.diagram">
+      <DependentUpon>F05_TrainOdometer.pg</DependentUpon>
+    </None>
+    <None Include="F06_CommunicationMedium.pg" />
+    <None Include="F06_CommunicationMedium.pg.diagram">
+      <DependentUpon>F06_CommunicationMedium.pg</DependentUpon>
+    </None>
+    <None Include="FailureController.pg" />
+    <None Include="FailureController.pg.diagram">
+      <DependentUpon>FailureController.pg</DependentUpon>
+    </None>
     <None Include="NuSMV1.smv">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -10,14 +10,17 @@
     </initialNode>
     <state Id="842558e9-7d26-4d10-bea4-3f79987b8e06" name="Idle">
       <successors>
-        <transition Id="db673686-176e-40c9-9cb7-12b1c387b122" guard="TrainRadioSender == SendCloseSignal" label="TrainRadioSender == SendCloseSignal">
+        <transition Id="db673686-176e-40c9-9cb7-12b1c387b122" guard="TrainRadioSender == SendCloseSignal || Defect" label="TrainRadioSender == SendCloseSignal || Defect">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/MSG_Close" />
         </transition>
         <transition Id="a8d9e0e0-24aa-493d-8e83-127b1d9abf7a" guard="TrainRadioSender == SendRequest" label="TrainRadioSender == SendRequest">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/MSG_Request" />
         </transition>
-        <transition Id="db54e799-a8a7-4760-9688-c89cb40a3d00" guard="CrossingRadioSender == SendResponse" label="CrossingRadioSender == SendResponse">
+        <transition Id="db54e799-a8a7-4760-9688-c89cb40a3d00" guard="CrossingRadioSender == SendResponse || Defect" label="CrossingRadioSender == SendResponse || Defect">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/MSG_Response" />
+        </transition>
+        <transition Id="c00f3993-0737-470a-8b1d-9127619d5525" guard="Defect" label="Defect">
+          <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/Idle" />
         </transition>
       </successors>
     </state>
@@ -43,12 +46,23 @@
       </successors>
     </state>
   </states>
+  <macros>
+    <programGraphHasMacros Id="f7e2c039-b290-42a0-94c2-5eadd4639a07">
+      <macro Id="0d590363-c084-4050-91d0-9b4e4fc9b7e2" name="NoDefect" body="F06_CommunicationMedium == NO" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="e105bf2e-f13a-4a62-a2e2-6ebdcd7a906e">
+      <macro Id="913591a0-0fb1-4196-ae62-ae3c9073013e" name="Defect" body="F06_CommunicationMedium == YES" />
+    </programGraphHasMacros>
+  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="dcbdd782-23b4-45b4-af0f-41ebe99b4be5">
       <importedVariable Id="317acf42-b6ac-4dfa-885f-2a58a9f1656b" name="TrainRadioSender" range="Idle, SendCloseSignal, SendRequest" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="54b19157-2fd9-49de-b1d4-b2843d595711">
       <importedVariable Id="13751e27-376c-4deb-a695-715820fbcf9c" name="CrossingRadioSender" range="Idle, SendResponse" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="e4b44840-00dc-4253-a3ce-ae5caafa34f1">
+      <importedVariable Id="0ed828b5-9963-4e23-a03f-fdb618cc3aea" name="F06_CommunicationMedium" range="NO, YES" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

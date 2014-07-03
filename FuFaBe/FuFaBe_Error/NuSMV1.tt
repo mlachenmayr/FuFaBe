@@ -6,7 +6,7 @@
 
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
-CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_TrainControl = L_GP)) 
+CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9)) 
 
 -- Check: Communication of different message types between sender and receiver
 LTLSPEC F(v.V_TrainRadioSender = L_SendCloseSignal) 
@@ -22,7 +22,7 @@ LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioS
 -- Check: If train reaches SP, then the crossing will open sometime.
 LTLSPEC G (v.V_TrainControl = L_Go) -> F (v.V_Crossing = L_Opened)
 
--- Check: The train must send messages at the EP and AP.
+-- Check: The train must send messages at the EP and AP. 
 LTLSPEC F(v.V_TrainControl = L_EP)
 LTLSPEC F(v.V_TrainControl = L_AP)
 LTLSPEC G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal)

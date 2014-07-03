@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="64673e49-aea8-4ec9-bc55-9440e45649bf" name="FailureController" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="2be77824-c539-4ea1-8dda-897453f0ca1d" name="InitialNode1">
+      <successors>
+        <transition Id="42b7cc74-94ed-4377-8859-f28094967739" guard="F01 == false &amp;&amp; F02 == false &amp;&amp; F03 == false &amp;&amp; F04 == false &amp;&amp; F05 == false &amp;&amp; F06 == true" label="F01 == false &amp;&amp; F02 == false &amp;&amp; F03 == false &amp;&amp; F04 == false &amp;&amp; F05 == false &amp;&amp; F06 == true">
+          <stateMoniker name="/64673e49-aea8-4ec9-bc55-9440e45649bf/Idle" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="bcb630f2-95fe-4251-a5f3-0429e04d42d7" name="Idle" />
+  </states>
+  <variables>
+    <programGraphHasVariables Id="e62842fb-4301-4f46-bdbc-aa42592a8189">
+      <variable Id="eb81bd57-26a0-4977-91d9-07e36769797c" name="F01" range="bool" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="de2b2f9a-a252-4f4a-aa0a-380a8e96d6ad">
+      <variable Id="cb79b9e4-429b-4489-a6c8-bf1bfd506ac4" name="F02" range="bool" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="77e06f15-92e6-4e86-9e05-33883ebb9826">
+      <variable Id="dc5876e0-8cad-4412-b80d-b791ddbec532" name="F03" range="bool" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="c02879e1-58cc-4dcd-889f-4904accba499">
+      <variable Id="c4f6561d-8180-4d89-b72f-514ca6042ee3" name="F04" range="bool" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="faf33c3c-74fb-43d5-8bf8-58e17c8b5f59">
+      <variable Id="00f0501e-80a1-4283-b3e0-486164dad4e2" name="F05" range="bool" />
+    </programGraphHasVariables>
+    <programGraphHasVariables Id="ced08b69-1349-4fcc-b359-980a25ac8a2a">
+      <variable Id="b6526894-0124-4e2b-93c0-a9116040759f" name="F06" range="bool" />
+    </programGraphHasVariables>
+  </variables>
+  <comments>
+    <programGraphHasComments Id="9c34ff6d-a822-454b-98e5-81eb1360e0e9">
+      <comment Id="7d810938-a66f-4786-99e6-a7e0117ea481" text="F01 = EmergencyBrake" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="8c76d53c-8894-4781-bec4-58de45438869">
+      <comment Id="eae94751-9a89-4799-a76e-c57186a977bb" text="F02 = TrainRadioReceiver" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="e1d0d5b5-383c-4db9-ae02-12bb7aa94351">
+      <comment Id="0c582c5d-5855-42f1-a0fd-1195e6a02085" text="F03 = CrossingMotor" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="501fa9c0-23d1-4d51-a7f5-3b0c2202c25f">
+      <comment Id="14d39db3-97a2-40f9-aa09-551c58cbd4f6" text="F04 = OpeningSensor" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="e775ec7e-2a9a-4bb5-84b9-e26fbf3f4bc2">
+      <comment Id="3731f618-2768-4142-a16f-b7e00b299f2b" text="F05 = TrainOdometer" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="976efdb6-0df7-4ed7-90a5-56c03bb93da6">
+      <comment Id="5d5dd988-c9dc-4a49-ada8-0d2d307c3a87" text="F06 = CommunicationMedium" />
+    </programGraphHasComments>
+  </comments>
+</programGraph>

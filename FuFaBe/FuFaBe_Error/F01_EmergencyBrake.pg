@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="e35675f4-7bf2-4d64-8699-c0350038d79f" name="F01_EmergencyBrake" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="f742c4a1-8ba6-408f-826f-390c2b04b08b" name="InitialNode1">
+      <successors>
+        <transition Id="9fb8f134-7d5c-4efb-9e9e-7aea2da2ee46">
+          <stateMoniker name="/e35675f4-7bf2-4d64-8699-c0350038d79f/NO" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="5741a2f0-d56d-44e9-bde2-08df2de65436" name="NO">
+      <successors>
+        <transition Id="1cdd5e88-31c5-4728-9217-b6705dc6f834" guard="F01 == true" label="F01 == true">
+          <stateMoniker name="/e35675f4-7bf2-4d64-8699-c0350038d79f/YES" />
+        </transition>
+        <transition Id="c0b89efc-2b4b-430e-b54f-fab4c89d713b">
+          <stateMoniker name="/e35675f4-7bf2-4d64-8699-c0350038d79f/NO" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="370a1595-e4f5-4f49-ade5-f8f461043cd4" name="YES" />
+  </states>
+  <comments>
+    <programGraphHasComments Id="071c836a-8b53-434f-b1d9-b6a7a4b15e93">
+      <comment Id="bb841a27-043f-49dc-b2c1-3243cc8e526c" text="Transient error: no return to correct state" />
+    </programGraphHasComments>
+  </comments>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="bfbeb636-2884-427a-bee8-ea5fff97fb2d">
+      <importedVariable Id="36fca4d7-8ae6-49e9-af61-dbfda894be47" name="FailureController.F01" range="bool" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

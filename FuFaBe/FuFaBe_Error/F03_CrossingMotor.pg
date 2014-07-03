@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="2f804576-f13b-4765-a5ee-f7e1c4f45410" name="F03_CrossingMotor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="04b6a2af-39b9-4ea4-be35-7a9ae648d111" name="InitialNode1">
+      <successors>
+        <transition Id="e4f336da-7565-4fb5-ab15-48ca9f72e65c">
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/NO" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="9ccb1e2a-617b-48fe-9620-7c228501c7fc" name="NO">
+      <successors>
+        <transition Id="431c6a46-2f2f-4bc3-96f5-237be884a906" guard="F03 == true" label="F03 == true">
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/YES" />
+        </transition>
+        <transition Id="ac02b5f1-9154-4860-b4cc-816cdb6013a1">
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/NO" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="3bceff2a-5f69-4be6-9cbd-4041d7884cd9" name="YES" />
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="a365cbe5-19ee-44bf-85d2-4c87db79b8f2">
+      <importedVariable Id="40bf02c0-3bd9-4190-8d27-bed38f5f53cd" name="FailureController.F03" range="bool" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

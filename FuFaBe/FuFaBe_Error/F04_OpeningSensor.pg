@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<programGraph xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="631d59c5-4bbb-4414-89d0-db5d9ff447ca" name="F04_OpeningSensor" xmlns="http://schemas.microsoft.com/dsltools/ProgramGraphDsl">
+  <states>
+    <initialNode Id="b4916d8b-7cbc-4cde-953e-17a81c743a0e" name="InitialNode1">
+      <successors>
+        <transition Id="21b44124-d14a-4868-99d7-19e61b77ed32">
+          <stateMoniker name="/631d59c5-4bbb-4414-89d0-db5d9ff447ca/NO" />
+        </transition>
+      </successors>
+    </initialNode>
+    <state Id="5c920ade-81af-4696-af70-aff2d680714a" name="NO">
+      <successors>
+        <transition Id="c55c0196-91ed-463a-897c-dad9b5e8900f" guard="F04 == true" label="F04 == true">
+          <stateMoniker name="/631d59c5-4bbb-4414-89d0-db5d9ff447ca/YES" />
+        </transition>
+        <transition Id="a8d68909-9eb6-49c9-abfd-2b54e17d214d">
+          <stateMoniker name="/631d59c5-4bbb-4414-89d0-db5d9ff447ca/NO" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="fcbdd830-8a6e-492a-80cb-3655909d5e7e" name="YES">
+      <successors>
+        <transition Id="1df66f47-aed2-42db-a89a-a8c44e281b74">
+          <stateMoniker name="/631d59c5-4bbb-4414-89d0-db5d9ff447ca/NO" />
+        </transition>
+        <transition Id="7fa380ee-128d-43af-976f-14ae034b3741">
+          <stateMoniker name="/631d59c5-4bbb-4414-89d0-db5d9ff447ca/YES" />
+        </transition>
+      </successors>
+    </state>
+  </states>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="c587b7e6-241a-4598-80cd-a92e2716f170">
+      <importedVariable Id="06eeb9db-9833-4c93-92d8-79b1f65e8cc0" name="FailureController.F04" range="bool" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
+</programGraph>

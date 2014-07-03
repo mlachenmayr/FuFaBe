@@ -10,11 +10,14 @@
     </initialNode>
     <state Id="10c29982-2c4e-4530-8cba-7c8de92b4647" name="Off">
       <successors>
-        <transition Id="f833a67e-cb5e-4da8-92ee-678eccd97719" guard="CrossingControl == Closing" label="CrossingControl == Closing">
+        <transition Id="f833a67e-cb5e-4da8-92ee-678eccd97719" guard="CrossingControl == Closing &amp;&amp; NotDefect" label="CrossingControl == Closing &amp;&amp; NotDefect">
           <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Down" />
         </transition>
-        <transition Id="a085b128-e3ab-4907-a8b6-de28eae3ed26" guard="CrossingControl == Opening" label="CrossingControl == Opening">
+        <transition Id="a085b128-e3ab-4907-a8b6-de28eae3ed26" guard="CrossingControl == Opening &amp;&amp; NotDefect" label="CrossingControl == Opening &amp;&amp; NotDefect">
           <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Up" />
+        </transition>
+        <transition Id="42e3f3da-7502-4f27-a173-4d483d9028ce" guard="Defect" label="Defect">
+          <stateMoniker name="/267312bf-b506-42a1-90bd-4cea85c1076b/Off" />
         </transition>
       </successors>
     </state>
@@ -33,9 +36,20 @@
       </successors>
     </state>
   </states>
+  <macros>
+    <programGraphHasMacros Id="62882e93-9732-412a-88b8-4209a5941a27">
+      <macro Id="93e595a1-fafa-4643-8a72-20c7c0d37fcb" name="NotDefect" body="F03_CrossingMotor == NO" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="0c50e11e-58b9-4275-b9bf-73008bdc2e3d">
+      <macro Id="36f21158-1fce-4f50-b6ac-a89b01e897e2" name="Defect" body="F03_CrossingMotor == YES" />
+    </programGraphHasMacros>
+  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="de156878-209e-43aa-94a7-7121e6c6a66b">
       <importedVariable Id="a2837f9d-37d8-4d95-93b0-a3e2ecb56fe4" name="CrossingControl" range="Idle, Closing, Opening, Closed, Opened" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="fd6128a0-3311-4361-a7d0-1a5b1df6e47d">
+      <importedVariable Id="b4272b83-b801-4c84-9525-090ae1851ef5" name="F03_CrossingMotor" range="NO, YES" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>
