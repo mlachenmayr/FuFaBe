@@ -4,7 +4,7 @@ MODULE _VARS
 		V_CommunicationMedium : {L_Idle, L_MSG_Close, L_MSG_Request, L_MSG_Response};
 		V_TrainRadioSender : {L_Idle, L_SendCloseSignal, L_SendRequest};
 		V_CrossingRadioSender : {L_Idle, L_SendResponse};
-		V_F06_CommunicationMedium : {L_NO, L_YES};
+		V_F06_CommunicationMedium : {L_NO, L_Loss, L_FalseReport};
 		V_Constants : {L_Idle};
 		V_z : {50};
 		V_c : {3};
@@ -18,7 +18,7 @@ MODULE _VARS
 		V_CrossingSensor : {L_Opened, L_Closed, L_Moving};
 		V_Timer : {L_Idle, L_Tick, L_Timeout};
 		V_OpeningSensor : {L_Idle, L_Waitng, L_Open};
-		V_F03_CrossingMotor : {L_NO, L_YES};
+		V_F03_CrossingMotor : {L_NO, L_DoNotWork, L_OutOfControl};
 		V_EmergencyBreak : {L_Off, L_On};
 		V_BrakeIterator : 0..2;
 		V_Deceleration : {1};
@@ -26,15 +26,15 @@ MODULE _VARS
 		V_Speed : 0..9;
 		V_F01_EmergencyBrake : {L_NO, L_YES};
 		V_F01 : boolean;
-		V_F02_TrainRadioReceiver : {L_NO, L_YES};
+		V_F02_TrainRadioReceiver : {L_NO, L_Loss, L_FalseReport};
 		V_F02 : boolean;
 		V_F03 : boolean;
 		V_F04_OpeningSensor : {L_NO, L_YES};
 		V_F04 : boolean;
 		V_F05_TrainOdometer : {L_NO, L_YES};
 		V_F05 : boolean;
-		V_FailureController : {L_Idle};
 		V_F06 : boolean;
+		V_FailureController : {L_Idle};
 		V_Position : -100..400;
 		V_Time : 0..30;
 		V_SignalClosedCrossing : boolean;
@@ -44,19 +44,19 @@ MODULE _VARS
 		V_VisitSCS : boolean;
 		V_VisitSR : boolean;
 	TRANS
-		next(V_z) = V_z & next(V_c) = V_c & next(V_sp_pos) = V_sp_pos & next(V_ClosingTime) = V_ClosingTime & next(V_Deceleration) = V_Deceleration & next(V_F01) = V_F01 & next(V_F02) = V_F02 & next(V_F03) = V_F03 & next(V_F04) = V_F04 & next(V_F05) = V_F05;
+		next(V_z) = V_z & next(V_c) = V_c & next(V_sp_pos) = V_sp_pos & next(V_ClosingTime) = V_ClosingTime & next(V_Deceleration) = V_Deceleration & next(V_F01) = V_F01 & next(V_F02) = V_F02 & next(V_F03) = V_F03 & next(V_F04) = V_F04 & next(V_F05) = V_F05 & next(V_F06) = V_F06;
 MODULE _P_CommunicationMedium(v)
 	INIT
 		(v.V_CommunicationMedium = L_Idle) & (TRUE)
 	TRANS
-		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_MSG_Close & ((v.V_TrainRadioSender = L_SendCloseSignal) | (v.V_F06_CommunicationMedium = L_YES)) & (TRUE))  |
-		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_MSG_Request & (v.V_TrainRadioSender = L_SendRequest) & (TRUE))  |
-		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_MSG_Response & ((v.V_CrossingRadioSender = L_SendResponse) | (v.V_F06_CommunicationMedium = L_YES)) & (TRUE))  |
-		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_Idle & (v.V_F06_CommunicationMedium = L_YES) & (TRUE))  |
+		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_MSG_Close & ((v.V_TrainRadioSender = L_SendCloseSignal) | (v.V_F06_CommunicationMedium = L_FalseReport)) & (TRUE))  |
+		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_MSG_Request & ((v.V_TrainRadioSender = L_SendRequest) | (v.V_F06_CommunicationMedium = L_FalseReport)) & (TRUE))  |
+		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_MSG_Response & ((v.V_CrossingRadioSender = L_SendResponse) | (v.V_F06_CommunicationMedium = L_FalseReport)) & (TRUE))  |
+		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_Idle & (v.V_F06_CommunicationMedium = L_Loss) & (TRUE))  |
 		 ( v.V_CommunicationMedium = L_MSG_Close & next(v.V_CommunicationMedium) = L_Idle & TRUE & (TRUE))  |
 		 ( v.V_CommunicationMedium = L_MSG_Request & next(v.V_CommunicationMedium) = L_Idle & TRUE & (TRUE))  |
 		 ( v.V_CommunicationMedium = L_MSG_Response & next(v.V_CommunicationMedium) = L_Idle & TRUE & (TRUE))  |
-		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_Idle & (!((v.V_TrainRadioSender = L_SendCloseSignal) | (v.V_F06_CommunicationMedium = L_YES)) & (!(v.V_TrainRadioSender = L_SendRequest) & (!((v.V_CrossingRadioSender = L_SendResponse) | (v.V_F06_CommunicationMedium = L_YES)) & !(v.V_F06_CommunicationMedium = L_YES)))) & (TRUE));
+		 ( v.V_CommunicationMedium = L_Idle & next(v.V_CommunicationMedium) = L_Idle & (!((v.V_TrainRadioSender = L_SendCloseSignal) | (v.V_F06_CommunicationMedium = L_FalseReport)) & (!((v.V_TrainRadioSender = L_SendRequest) | (v.V_F06_CommunicationMedium = L_FalseReport)) & (!((v.V_CrossingRadioSender = L_SendResponse) | (v.V_F06_CommunicationMedium = L_FalseReport)) & !(v.V_F06_CommunicationMedium = L_Loss)))) & (TRUE));
 MODULE _P_Constants(v)
 	INIT
 		(v.V_Constants = L_Idle) & (TRUE)
@@ -93,12 +93,12 @@ MODULE _P_CrossingMotor(v)
 	INIT
 		(v.V_CrossingMotor = L_Off) & (TRUE)
 	TRANS
-		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Down & ((v.V_CrossingControl = L_Closing) & (v.V_F03_CrossingMotor = L_NO)) & (TRUE))  |
-		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Up & ((v.V_CrossingControl = L_Opening) & (v.V_F03_CrossingMotor = L_NO)) & (TRUE))  |
-		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Off & (v.V_F03_CrossingMotor = L_YES) & (TRUE))  |
+		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Down & (((v.V_CrossingControl = L_Closing) & (v.V_F03_CrossingMotor = L_NO)) | (v.V_F03_CrossingMotor = L_OutOfControl)) & (TRUE))  |
+		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Up & (((v.V_CrossingControl = L_Opening) & (v.V_F03_CrossingMotor = L_NO)) | (v.V_F03_CrossingMotor = L_OutOfControl)) & (TRUE))  |
+		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Off & (v.V_F03_CrossingMotor = L_DoNotWork) & (TRUE))  |
 		 ( v.V_CrossingMotor = L_Down & next(v.V_CrossingMotor) = L_Off & (v.V_CrossingControl = L_Closed) & (TRUE))  |
 		 ( v.V_CrossingMotor = L_Up & next(v.V_CrossingMotor) = L_Off & (v.V_CrossingControl = L_Opened) & (TRUE))  |
-		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Off & (!((v.V_CrossingControl = L_Closing) & (v.V_F03_CrossingMotor = L_NO)) & (!((v.V_CrossingControl = L_Opening) & (v.V_F03_CrossingMotor = L_NO)) & !(v.V_F03_CrossingMotor = L_YES))) & (TRUE))  |
+		 ( v.V_CrossingMotor = L_Off & next(v.V_CrossingMotor) = L_Off & (!(((v.V_CrossingControl = L_Closing) & (v.V_F03_CrossingMotor = L_NO)) | (v.V_F03_CrossingMotor = L_OutOfControl)) & (!(((v.V_CrossingControl = L_Opening) & (v.V_F03_CrossingMotor = L_NO)) | (v.V_F03_CrossingMotor = L_OutOfControl)) & !(v.V_F03_CrossingMotor = L_DoNotWork))) & (TRUE))  |
 		 ( v.V_CrossingMotor = L_Down & next(v.V_CrossingMotor) = L_Down & !(v.V_CrossingControl = L_Closed) & (TRUE))  |
 		 ( v.V_CrossingMotor = L_Up & next(v.V_CrossingMotor) = L_Up & !(v.V_CrossingControl = L_Opened) & (TRUE));
 MODULE _P_CrossingRadioReceiver(v)
@@ -150,17 +150,23 @@ MODULE _P_F02_TrainRadioReceiver(v)
 	INIT
 		(v.V_F02_TrainRadioReceiver = L_NO) & (TRUE)
 	TRANS
-		 ( v.V_F02_TrainRadioReceiver = L_NO & next(v.V_F02_TrainRadioReceiver) = L_YES & (v.V_F02 = TRUE) & (TRUE))  |
+		 ( v.V_F02_TrainRadioReceiver = L_NO & next(v.V_F02_TrainRadioReceiver) = L_Loss & (v.V_F02 = TRUE) & (TRUE))  |
 		 ( v.V_F02_TrainRadioReceiver = L_NO & next(v.V_F02_TrainRadioReceiver) = L_NO & TRUE & (TRUE))  |
-		 ( v.V_F02_TrainRadioReceiver = L_YES & next(v.V_F02_TrainRadioReceiver) = L_NO & TRUE & (TRUE))  |
-		 ( v.V_F02_TrainRadioReceiver = L_YES & next(v.V_F02_TrainRadioReceiver) = L_YES & TRUE & (TRUE));
+		 ( v.V_F02_TrainRadioReceiver = L_NO & next(v.V_F02_TrainRadioReceiver) = L_FalseReport & (v.V_F02 = TRUE) & (TRUE))  |
+		 ( v.V_F02_TrainRadioReceiver = L_Loss & next(v.V_F02_TrainRadioReceiver) = L_NO & TRUE & (TRUE))  |
+		 ( v.V_F02_TrainRadioReceiver = L_Loss & next(v.V_F02_TrainRadioReceiver) = L_Loss & TRUE & (TRUE))  |
+		 ( v.V_F02_TrainRadioReceiver = L_FalseReport & next(v.V_F02_TrainRadioReceiver) = L_NO & TRUE & (TRUE))  |
+		 ( v.V_F02_TrainRadioReceiver = L_FalseReport & next(v.V_F02_TrainRadioReceiver) = L_FalseReport & TRUE & (TRUE));
 MODULE _P_F03_CrossingMotor(v)
 	INIT
 		(v.V_F03_CrossingMotor = L_NO) & (TRUE)
 	TRANS
-		 ( v.V_F03_CrossingMotor = L_NO & next(v.V_F03_CrossingMotor) = L_YES & (v.V_F03 = TRUE) & (TRUE))  |
+		 ( v.V_F03_CrossingMotor = L_NO & next(v.V_F03_CrossingMotor) = L_DoNotWork & (v.V_F03 = TRUE) & (TRUE))  |
 		 ( v.V_F03_CrossingMotor = L_NO & next(v.V_F03_CrossingMotor) = L_NO & TRUE & (TRUE))  |
-		 ( v.V_F03_CrossingMotor = L_YES & next(v.V_F03_CrossingMotor) = L_YES & TRUE & (TRUE));
+		 ( v.V_F03_CrossingMotor = L_NO & next(v.V_F03_CrossingMotor) = L_OutOfControl & (v.V_F03 = TRUE) & (TRUE))  |
+		 ( v.V_F03_CrossingMotor = L_OutOfControl & next(v.V_F03_CrossingMotor) = L_NO & TRUE & (TRUE))  |
+		 ( v.V_F03_CrossingMotor = L_OutOfControl & next(v.V_F03_CrossingMotor) = L_OutOfControl & TRUE & (TRUE))  |
+		 ( v.V_F03_CrossingMotor = L_DoNotWork & next(v.V_F03_CrossingMotor) = L_DoNotWork & TRUE & (TRUE));
 MODULE _P_F04_OpeningSensor(v)
 	INIT
 		(v.V_F04_OpeningSensor = L_NO) & (TRUE)
@@ -181,11 +187,16 @@ MODULE _P_F06_CommunicationMedium(v)
 	INIT
 		(v.V_F06_CommunicationMedium = L_NO) & (TRUE)
 	TRANS
-		 ( v.V_F06_CommunicationMedium = L_NO & next(v.V_F06_CommunicationMedium) = L_YES & TRUE & (TRUE))  |
-		 ( v.V_F06_CommunicationMedium = L_YES & next(v.V_F06_CommunicationMedium) = L_NO & TRUE & (TRUE));
+		 ( v.V_F06_CommunicationMedium = L_NO & next(v.V_F06_CommunicationMedium) = L_Loss & (v.V_F06 = TRUE) & (TRUE))  |
+		 ( v.V_F06_CommunicationMedium = L_NO & next(v.V_F06_CommunicationMedium) = L_FalseReport & (v.V_F06 = TRUE) & (TRUE))  |
+		 ( v.V_F06_CommunicationMedium = L_NO & next(v.V_F06_CommunicationMedium) = L_NO & TRUE & (TRUE))  |
+		 ( v.V_F06_CommunicationMedium = L_Loss & next(v.V_F06_CommunicationMedium) = L_NO & TRUE & (TRUE))  |
+		 ( v.V_F06_CommunicationMedium = L_Loss & next(v.V_F06_CommunicationMedium) = L_Loss & TRUE & (TRUE))  |
+		 ( v.V_F06_CommunicationMedium = L_FalseReport & next(v.V_F06_CommunicationMedium) = L_NO & TRUE & (TRUE))  |
+		 ( v.V_F06_CommunicationMedium = L_FalseReport & next(v.V_F06_CommunicationMedium) = L_FalseReport & TRUE & (TRUE));
 MODULE _P_FailureController(v)
 	INIT
-		(v.V_FailureController = L_Idle) & (((((((v.V_F01 = FALSE) & (v.V_F02 = FALSE)) & (v.V_F03 = FALSE)) & (v.V_F04 = FALSE)) & (v.V_F05 = FALSE)) & (v.V_F06 = TRUE)))
+		(v.V_FailureController = L_Idle) & (((((((v.V_F01 = TRUE) & (v.V_F02 = TRUE)) & (v.V_F03 = TRUE)) & (v.V_F04 = TRUE)) & (v.V_F05 = TRUE)) & (v.V_F06 = TRUE)))
 	TRANS
 		 ( v.V_FailureController = L_Idle & next(v.V_FailureController) = L_Idle & TRUE & (TRUE));
 MODULE _P_OpeningSensor(v)
@@ -260,10 +271,10 @@ MODULE _P_TrainRadioReceiver(v)
 	INIT
 		(v.V_TrainRadioReceiver = L_Idle) & (TRUE)
 	TRANS
-		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_ReceiveResponse & ((v.V_CommunicationMedium = L_MSG_Response) & (v.V_F02_TrainRadioReceiver = L_NO)) & (TRUE))  |
-		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_Idle & (v.V_F02_TrainRadioReceiver = L_YES) & (TRUE))  |
+		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_ReceiveResponse & (((v.V_CommunicationMedium = L_MSG_Response) & (v.V_F02_TrainRadioReceiver = L_NO)) | (v.V_F02_TrainRadioReceiver = L_FalseReport)) & (TRUE))  |
+		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_Idle & (v.V_F02_TrainRadioReceiver = L_Loss) & (TRUE))  |
 		 ( v.V_TrainRadioReceiver = L_ReceiveResponse & next(v.V_TrainRadioReceiver) = L_Idle & TRUE & (TRUE))  |
-		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_Idle & (!((v.V_CommunicationMedium = L_MSG_Response) & (v.V_F02_TrainRadioReceiver = L_NO)) & !(v.V_F02_TrainRadioReceiver = L_YES)) & (TRUE));
+		 ( v.V_TrainRadioReceiver = L_Idle & next(v.V_TrainRadioReceiver) = L_Idle & (!(((v.V_CommunicationMedium = L_MSG_Response) & (v.V_F02_TrainRadioReceiver = L_NO)) | (v.V_F02_TrainRadioReceiver = L_FalseReport)) & !(v.V_F02_TrainRadioReceiver = L_Loss)) & (TRUE));
 MODULE _P_TrainRadioSender(v)
 	INIT
 		(v.V_TrainRadioSender = L_Idle) & (((v.V_VisitSCS = FALSE) & (v.V_VisitSR = FALSE)))
@@ -301,7 +312,7 @@ MODULE main
 		p_TrainRadioSender : _P_TrainRadioSender(v);
 
 
-
+ 
 
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP

@@ -10,16 +10,16 @@
     </initialNode>
     <state Id="842558e9-7d26-4d10-bea4-3f79987b8e06" name="Idle">
       <successors>
-        <transition Id="db673686-176e-40c9-9cb7-12b1c387b122" guard="TrainRadioSender == SendCloseSignal || Defect" label="TrainRadioSender == SendCloseSignal || Defect">
+        <transition Id="db673686-176e-40c9-9cb7-12b1c387b122" guard="TrainRadioSender == SendCloseSignal || DefectFalseReport" label="TrainRadioSender == SendCloseSignal || DefectFalseReport">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/MSG_Close" />
         </transition>
-        <transition Id="a8d9e0e0-24aa-493d-8e83-127b1d9abf7a" guard="TrainRadioSender == SendRequest" label="TrainRadioSender == SendRequest">
+        <transition Id="a8d9e0e0-24aa-493d-8e83-127b1d9abf7a" guard="TrainRadioSender == SendRequest || DefectFalseReport" label="TrainRadioSender == SendRequest || DefectFalseReport">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/MSG_Request" />
         </transition>
-        <transition Id="db54e799-a8a7-4760-9688-c89cb40a3d00" guard="CrossingRadioSender == SendResponse || Defect" label="CrossingRadioSender == SendResponse || Defect">
+        <transition Id="db54e799-a8a7-4760-9688-c89cb40a3d00" guard="CrossingRadioSender == SendResponse || DefectFalseReport" label="CrossingRadioSender == SendResponse || DefectFalseReport">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/MSG_Response" />
         </transition>
-        <transition Id="c00f3993-0737-470a-8b1d-9127619d5525" guard="Defect" label="Defect">
+        <transition Id="c00f3993-0737-470a-8b1d-9127619d5525" guard="DefectLoss" label="DefectLoss">
           <stateMoniker name="/3be516ab-dcc4-46e8-a1e3-888f898335f6/Idle" />
         </transition>
       </successors>
@@ -51,7 +51,10 @@
       <macro Id="0d590363-c084-4050-91d0-9b4e4fc9b7e2" name="NoDefect" body="F06_CommunicationMedium == NO" />
     </programGraphHasMacros>
     <programGraphHasMacros Id="e105bf2e-f13a-4a62-a2e2-6ebdcd7a906e">
-      <macro Id="913591a0-0fb1-4196-ae62-ae3c9073013e" name="Defect" body="F06_CommunicationMedium == YES" />
+      <macro Id="913591a0-0fb1-4196-ae62-ae3c9073013e" name="DefectLoss" body="F06_CommunicationMedium == Loss" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="c5af690e-3547-44f0-84db-c62b69d5dbfa">
+      <macro Id="d87adbc9-ec8f-4725-a59b-f83931fd3a7d" name="DefectFalseReport" body="F06_CommunicationMedium == FalseReport" />
     </programGraphHasMacros>
   </macros>
   <importedVariables>
@@ -62,7 +65,7 @@
       <importedVariable Id="13751e27-376c-4deb-a695-715820fbcf9c" name="CrossingRadioSender" range="Idle, SendResponse" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="e4b44840-00dc-4253-a3ce-ae5caafa34f1">
-      <importedVariable Id="0ed828b5-9963-4e23-a03f-fdb618cc3aea" name="F06_CommunicationMedium" range="NO, YES" />
+      <importedVariable Id="0ed828b5-9963-4e23-a03f-fdb618cc3aea" name="F06_CommunicationMedium" range="NO, Loss, FalseReport" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

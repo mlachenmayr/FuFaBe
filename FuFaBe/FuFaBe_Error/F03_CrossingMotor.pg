@@ -11,14 +11,27 @@
     <state Id="9ccb1e2a-617b-48fe-9620-7c228501c7fc" name="NO">
       <successors>
         <transition Id="431c6a46-2f2f-4bc3-96f5-237be884a906" guard="F03 == true" label="F03 == true">
-          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/YES" />
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/DoNotWork" />
         </transition>
         <transition Id="ac02b5f1-9154-4860-b4cc-816cdb6013a1">
           <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/NO" />
         </transition>
+        <transition Id="49902637-e510-458e-8ee8-da448e6e166f" guard="F03 == true" label="F03 == true">
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/OutOfControl" />
+        </transition>
       </successors>
     </state>
-    <state Id="3bceff2a-5f69-4be6-9cbd-4041d7884cd9" name="YES" />
+    <state Id="3bceff2a-5f69-4be6-9cbd-4041d7884cd9" name="DoNotWork" />
+    <state Id="dd97f152-eae8-4cfd-8824-051e2072dafc" name="OutOfControl">
+      <successors>
+        <transition Id="5bfa9a8d-a5c2-4ee1-a78c-8ed5a3df56e5">
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/NO" />
+        </transition>
+        <transition Id="5efd3764-b16d-4790-9224-f5399f0d5c57">
+          <stateMoniker name="/2f804576-f13b-4765-a5ee-f7e1c4f45410/OutOfControl" />
+        </transition>
+      </successors>
+    </state>
   </states>
   <importedVariables>
     <programGraphHasImportedVariables Id="a365cbe5-19ee-44bf-85d2-4c87db79b8f2">

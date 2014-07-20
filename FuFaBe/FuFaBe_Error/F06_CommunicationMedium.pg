@@ -10,17 +10,49 @@
     </initialNode>
     <state Id="0df526cb-a14b-4f8b-94c6-0ebaca377ce1" name="NO">
       <successors>
-        <transition Id="d879ae28-678a-409a-825b-d7a7824bb3b9">
-          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/YES" />
+        <transition Id="d879ae28-678a-409a-825b-d7a7824bb3b9" guard="F06 == true" label="F06 == true">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/Loss" />
         </transition>
-      </successors>
-    </state>
-    <state Id="49903a85-a37e-4df4-b0de-a5b8e52bac01" name="YES">
-      <successors>
-        <transition Id="942e1269-9eec-403b-962a-cbd0f05c0831">
+        <transition Id="c43ac920-df43-45d0-84ea-6feae407f2ca" guard="F06 == true" label="F06 == true">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/FalseReport" />
+        </transition>
+        <transition Id="7b4f97e7-49ed-4bd9-a548-68338d90fa04">
           <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/NO" />
         </transition>
       </successors>
     </state>
+    <state Id="49903a85-a37e-4df4-b0de-a5b8e52bac01" name="Loss">
+      <successors>
+        <transition Id="942e1269-9eec-403b-962a-cbd0f05c0831">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/NO" />
+        </transition>
+        <transition Id="21bbd983-f553-4f48-9014-c6f15a325511">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/Loss" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="39e25ab6-94a1-40cf-ac55-b737f9d7b15a" name="FalseReport">
+      <successors>
+        <transition Id="50e4bcef-7863-4164-86f5-fcad02636522">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/NO" />
+        </transition>
+        <transition Id="1fc3a213-5743-4a54-8136-dd4d31db7165">
+          <stateMoniker name="/a431afd0-1bf1-44cd-bbb0-11e8925a34ee/FalseReport" />
+        </transition>
+      </successors>
+    </state>
   </states>
+  <comments>
+    <programGraphHasComments Id="169ab1dc-0e12-4b56-8282-3c12f292c832">
+      <comment Id="726ede70-c442-4e2f-9d9b-21af9204514c" text="Loss means the losing of an real existing meassage" />
+    </programGraphHasComments>
+    <programGraphHasComments Id="fbf87cd1-6331-4145-908b-d38b40682ff2">
+      <comment Id="dfbb9783-ff6a-460a-87f2-ae9a1b8481c3" text="FalseReport: a message was found from an &quot;unofficial&quot; sender (e. g. hacker)" />
+    </programGraphHasComments>
+  </comments>
+  <importedVariables>
+    <programGraphHasImportedVariables Id="ad02609f-9c81-4824-82c5-1b79d1467051">
+      <importedVariable Id="426d3185-da29-4097-9053-7f5b86980fc8" name="FailureController.F06" range="bool" />
+    </programGraphHasImportedVariables>
+  </importedVariables>
 </programGraph>

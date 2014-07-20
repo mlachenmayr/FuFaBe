@@ -11,20 +11,33 @@
     <state Id="71dc1a36-9ccb-4d3a-b0c1-0c186072ae4a" name="NO">
       <successors>
         <transition Id="b593946c-14af-4d23-852d-7a648c89a168" guard="F02 == true" label="F02 == true">
-          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/YES" />
+          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/Loss" />
         </transition>
         <transition Id="a5ae77bd-4dd6-4be1-9e5c-7b1d9111b288">
           <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/NO" />
         </transition>
+        <transition Id="b1d90acc-2225-40b4-814a-22aefcebb521" guard="F02 == true" label="F02 == true">
+          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/FalseReport" />
+        </transition>
       </successors>
     </state>
-    <state Id="e6634a10-1036-4100-a680-755ac902e839" name="YES">
+    <state Id="e6634a10-1036-4100-a680-755ac902e839" name="Loss">
       <successors>
         <transition Id="a23edca7-2861-4124-8bea-012a402b7471">
           <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/NO" />
         </transition>
         <transition Id="580b19a9-5091-4dcb-ad3b-38ee0874f5b4">
-          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/YES" />
+          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/Loss" />
+        </transition>
+      </successors>
+    </state>
+    <state Id="89c00b49-5583-4106-aee4-5269096cbf0f" name="FalseReport">
+      <successors>
+        <transition Id="ce82ab2b-506a-411c-8d06-badc737f0a9b">
+          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/NO" />
+        </transition>
+        <transition Id="a08ef219-c77c-4d8e-b30a-77c5fbd26e42">
+          <stateMoniker name="/0a1d0137-b6d2-42ce-8c07-4b3c6f747188/FalseReport" />
         </transition>
       </successors>
     </state>

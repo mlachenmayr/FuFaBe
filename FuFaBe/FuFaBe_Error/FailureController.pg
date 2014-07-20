@@ -3,7 +3,7 @@
   <states>
     <initialNode Id="2be77824-c539-4ea1-8dda-897453f0ca1d" name="InitialNode1">
       <successors>
-        <transition Id="42b7cc74-94ed-4377-8859-f28094967739" guard="F01 == false &amp;&amp; F02 == false &amp;&amp; F03 == false &amp;&amp; F04 == false &amp;&amp; F05 == false &amp;&amp; F06 == true" label="F01 == false &amp;&amp; F02 == false &amp;&amp; F03 == false &amp;&amp; F04 == false &amp;&amp; F05 == false &amp;&amp; F06 == true">
+        <transition Id="42b7cc74-94ed-4377-8859-f28094967739" guard="F01 == true &amp;&amp; F02 == true &amp;&amp; F03 == true &amp;&amp; F04 == true &amp;&amp; F05 == true &amp;&amp; F06 == true" label="F01 == true &amp;&amp; F02 == true &amp;&amp; F03 == true &amp;&amp; F04 == true &amp;&amp; F05 == true &amp;&amp; F06 == true">
           <stateMoniker name="/64673e49-aea8-4ec9-bc55-9440e45649bf/Idle" />
         </transition>
       </successors>

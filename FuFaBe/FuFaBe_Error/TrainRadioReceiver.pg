@@ -10,10 +10,10 @@
     </initialNode>
     <state Id="d9acf876-0bf1-4961-b0a9-312f86be4bac" name="Idle">
       <successors>
-        <transition Id="4b465fe1-257f-4ab1-91bc-acc0158c6623" guard="CommunicationMedium == MSG_Response &amp;&amp; F02_TrainRadioReceiver == NO" label="CommunicationMedium == MSG_Response &amp;&amp; F02_TrainRadioReceiver == NO">
+        <transition Id="4b465fe1-257f-4ab1-91bc-acc0158c6623" guard="(CommunicationMedium == MSG_Response &amp;&amp; F02_TrainRadioReceiver == NO) || DefectFalseReport" label="(CommunicationMedium == MSG_Response &amp;&amp; F02_TrainRadioReceiver == NO) || DefectFalseReport">
           <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/ReceiveResponse" />
         </transition>
-        <transition Id="64b92cce-a031-41a9-a757-697c963679dd" guard="F02_TrainRadioReceiver == YES" label="F02_TrainRadioReceiver == YES">
+        <transition Id="64b92cce-a031-41a9-a757-697c963679dd" guard="DefectLoss" label="DefectLoss">
           <stateMoniker name="/3ae1010e-4a87-4fc8-823d-8e1377299b28/Idle" />
         </transition>
       </successors>
@@ -26,12 +26,23 @@
       </successors>
     </state>
   </states>
+  <macros>
+    <programGraphHasMacros Id="0b5d4f44-1cbf-4e27-aca4-4929ef17042e">
+      <macro Id="4c77d8cc-e260-4ea3-8f96-db78e492b131" name="NoDefect" body="F02_TrainRadioReceiver == NO" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="29b2c8bf-dbc2-4b07-8384-978a3614e2f8">
+      <macro Id="924a4c82-a885-4669-b9b2-1fa3bec2b937" name="DefectLoss" body="F02_TrainRadioReceiver == Loss" />
+    </programGraphHasMacros>
+    <programGraphHasMacros Id="ecde34e7-e92e-4696-a542-499cd72c4768">
+      <macro Id="e0d84c0e-f1fa-430d-a9b0-17e1a223e3f9" name="DefectFalseReport" body="F02_TrainRadioReceiver == FalseReport" />
+    </programGraphHasMacros>
+  </macros>
   <importedVariables>
     <programGraphHasImportedVariables Id="37741bec-5e32-4187-a87d-149e32f5633a">
       <importedVariable Id="b816e2b9-17e9-465a-a706-6131663061a5" name="CommunicationMedium" range="Idle, MSG_Close, MSG_Request, MSG_Response" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="d252d323-fd3e-4d54-94f4-36c055c9df34">
-      <importedVariable Id="097391ae-a468-4719-902c-707185910c92" name="F02_TrainRadioReceiver" range="NO, YES" />
+      <importedVariable Id="097391ae-a468-4719-902c-707185910c92" name="F02_TrainRadioReceiver" range="NO, Loss, FalseReport" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

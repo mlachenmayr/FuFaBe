@@ -2,7 +2,7 @@
 <#@ output encoding="us-ascii" extension=".smv" #>
 <#@ assembly Name="Safety.ProgramGraphDsl.dll" #>
 
-<#=  TransformToNuSMV() #>
+<#=  TransformToNuSMV() #> 
 
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
