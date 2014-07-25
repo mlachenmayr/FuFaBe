@@ -6,39 +6,39 @@
 
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
-CTLSPEC AG !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9)) 
+LTLSPEC G noError -> (G !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9))) 
 
 -- Check: Communication of different message types between sender and receiver
-LTLSPEC F(v.V_TrainRadioSender = L_SendCloseSignal) 
-CTLSPEC AG ((v.V_TrainRadioSender = L_SendCloseSignal) -> AX(AX(v.V_CrossingRadioReceiver = L_ReceiveClose)))
-CTLSPEC AG ((v.V_TrainRadioSender = L_SendRequest) -> AX(AX(v.V_CrossingRadioReceiver = L_ReceiveRequest)))
-CTLSPEC AG ((v.V_CrossingRadioSender = L_SendResponse) -> AX(AX(v.V_TrainRadioReceiver = L_ReceiveResponse)))
+LTLSPEC G noError -> ( F(v.V_TrainRadioSender = L_SendCloseSignal) )
+LTLSPEC G noError -> (G ((v.V_TrainRadioSender = L_SendCloseSignal) -> X(X(v.V_CrossingRadioReceiver = L_ReceiveClose))))
+LTLSPEC G noError -> (G ((v.V_TrainRadioSender = L_SendRequest) -> X(X(v.V_CrossingRadioReceiver = L_ReceiveRequest))))
+LTLSPEC G noError -> (G ((v.V_CrossingRadioSender = L_SendResponse) -> X(X(v.V_TrainRadioReceiver = L_ReceiveResponse))))
 
---LTLSPEC F ((v.V_CrossingRadioSender = L_SendResponse) & X X(v.V_TrainRadioReceiver = L_ReceiveResponse))
+--LTLSPEC G noError -> (F ((v.V_CrossingRadioSender = L_SendResponse) & X X(v.V_TrainRadioReceiver = L_ReceiveResponse)))
 
 -- Check: Wenn die Schranke einen "Request" bekommen hat, sendet sie auch irgendwann einen "Response"
-LTLSPEC G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse))
+LTLSPEC G noError -> (G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse)))
 
 -- Check: If train reaches SP, then the crossing will open sometime.
-LTLSPEC G (v.V_TrainControl = L_Go) -> F (v.V_Crossing = L_Opened)
+LTLSPEC G noError -> (G (v.V_TrainControl = L_Go) -> F (v.V_Crossing = L_Opened))
 
 -- Check: The train must send messages at the EP and AP. 
-LTLSPEC F(v.V_TrainControl = L_EP)
-LTLSPEC F(v.V_TrainControl = L_AP)
-LTLSPEC G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal)
-LTLSPEC G (v.V_TrainControl = L_AP) -> F (v.V_TrainRadioSender = L_SendRequest)
+LTLSPEC G noError -> (F(v.V_TrainControl = L_EP))
+LTLSPEC G noError -> (F(v.V_TrainControl = L_AP))
+LTLSPEC G noError -> (G (v.V_TrainControl = L_EP) -> F (v.V_TrainRadioSender = L_SendCloseSignal))
+LTLSPEC G noError -> (G (v.V_TrainControl = L_AP) -> F (v.V_TrainRadioSender = L_SendRequest))
 
 -- Check: gibt es einen Pfad, auf dem der Zug einen Request empfaengt?
 CTLSPEC EF(v.V_TrainRadioReceiver = L_ReceiveResponse)
 
 -- Check: wenn die Zug-Steuerung in den Zustand "Stop" geht, muss die Notbremse (im naechsten Step) aktiv sein
-LTLSPEC G (v.V_TrainControl = L_Stop) -> X (v.V_EmergencyBreak = L_On)
+LTLSPEC G noError -> (G (v.V_TrainControl = L_Stop) -> X (v.V_EmergencyBreak = L_On))
 
 -- Check: OpeningSensor im Zustand Open -> es oeffnet sich daraufhin die Schranke
-LTLSPEC G ((v.V_OpeningSensor = L_Open & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening))
+LTLSPEC G noError -> (G ((v.V_OpeningSensor = L_Open & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening)))
 
 -- Check: nach Timer-Ablauf oeffnet sich daraufhin die Schranke
-LTLSPEC G ((v.V_Timer = L_Timeout & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening))
+LTLSPEC G noError -> (G ((v.V_Timer = L_Timeout & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening)))
 
 -- Check: Geschwindigkeit wird nie erhoeht (ueber kompletten Verlauf hinweg)
--- CTLSPEC AG (v.V_Speed >= AX v.V_Speed)
+-- LTLSPEC G noError -> (G (v.V_Speed >= X v.V_Speed))
