@@ -4,17 +4,19 @@
 
 <#=  TransformToNuSMV() #> 
 
+DEFINE
+	noError := v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO;
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
-LTLSPEC G noError -> (G !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9))) 
+-- LTLSPEC G noError -> (G !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9))) 
 
 -- Check: Communication of different message types between sender and receiver
-LTLSPEC G noError -> ( F(v.V_TrainRadioSender = L_SendCloseSignal) )
+LTLSPEC G noError -> (F(v.V_TrainRadioSender = L_SendCloseSignal) )
 LTLSPEC G noError -> (G ((v.V_TrainRadioSender = L_SendCloseSignal) -> X(X(v.V_CrossingRadioReceiver = L_ReceiveClose))))
 LTLSPEC G noError -> (G ((v.V_TrainRadioSender = L_SendRequest) -> X(X(v.V_CrossingRadioReceiver = L_ReceiveRequest))))
 LTLSPEC G noError -> (G ((v.V_CrossingRadioSender = L_SendResponse) -> X(X(v.V_TrainRadioReceiver = L_ReceiveResponse))))
 
---LTLSPEC G noError -> (F ((v.V_CrossingRadioSender = L_SendResponse) & X X(v.V_TrainRadioReceiver = L_ReceiveResponse)))
+LTLSPEC G noError -> (F ((v.V_CrossingRadioSender = L_SendResponse) & X X(v.V_TrainRadioReceiver = L_ReceiveResponse)))
 
 -- Check: Wenn die Schranke einen "Request" bekommen hat, sendet sie auch irgendwann einen "Response"
 LTLSPEC G noError -> (G ((v.V_CrossingRadioReceiver = L_ReceiveClose) -> F (v.V_CrossingRadioSender = L_SendResponse)))
@@ -39,6 +41,3 @@ LTLSPEC G noError -> (G ((v.V_OpeningSensor = L_Open & v.V_CrossingControl = L_C
 
 -- Check: nach Timer-Ablauf oeffnet sich daraufhin die Schranke
 LTLSPEC G noError -> (G ((v.V_Timer = L_Timeout & v.V_CrossingControl = L_Closed) -> X(v.V_CrossingControl = L_Opening)))
-
--- Check: Geschwindigkeit wird nie erhoeht (ueber kompletten Verlauf hinweg)
--- LTLSPEC G noError -> (G (v.V_Speed >= X v.V_Speed))
