@@ -69,7 +69,7 @@
   </states>
   <comments>
     <programGraphHasComments Id="f094c46f-33bb-4f06-97ea-a77fe75e3d58">
-      <comment Id="de5b0e72-556b-47a9-88b3-043281fbc4f3" text="Hint: The formula of BEP_CALC has a constant 3 in it, because the real deceleration of the brake is 0.33, that is not a valid value for an integer. So we decided to set the deceleartion to 1 by multiplying with 3." />
+      <comment Id="de5b0e72-556b-47a9-88b3-043281fbc4f3" text="Hint: The formula of BEP_CALC has a constant 3 in it, because the real deceleration of the brake is 0.33, that is not a valid value for an integer. So we decided to set the deceleration to 1 by multiplying with 3." />
     </programGraphHasComments>
   </comments>
   <macros>
@@ -93,9 +93,6 @@
     <programGraphHasImportedVariables Id="cc2ce81c-5af3-4b04-ba38-7bbc375a6eae">
       <importedVariable Id="dd45dc38-3f3d-438b-8345-e3e155b3eb59" name="TrainMotion.Position" range="-100..400" />
     </programGraphHasImportedVariables>
-    <programGraphHasImportedVariables Id="aa063aa2-8507-42cd-9019-074426ff7b64">
-      <importedVariable Id="fb7a3851-c5b3-48fc-8d7e-0faaa0fa224c" name="Constants.z" range="50" />
-    </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="3715a2c2-bb0c-40cd-82a5-87a78ee37dc4">
       <importedVariable Id="cc800506-0371-47fc-8f3a-9da5f51e40aa" name="Constants.c" range="3" />
     </programGraphHasImportedVariables>
@@ -113,6 +110,9 @@
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="5c057192-d1c1-4da8-8bc4-a23842200724">
       <importedVariable Id="5a2eef0b-1c2c-4054-8ece-1764cec98b97" name="F05_TrainOdometer" range="NO, YES" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="07d6471c-203e-467e-958a-2c2445ea612e">
+      <importedVariable Id="05627d8c-c661-43bc-bce9-8835267bbbc8" name="Constants.z" range="55" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

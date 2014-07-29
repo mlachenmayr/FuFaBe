@@ -23,7 +23,7 @@
         <transition Id="58baca64-4526-4820-b369-eaa211683d2e" guard="Position &lt;= sp_pos || Defect" label="Position &lt;= sp_pos || Defect">
           <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Open" />
         </transition>
-        <transition Id="39bec7c8-6fb6-4cdf-a8d0-ee4abb63c96f" guard="Position &gt; sp_pos" label="Position &gt; sp_pos">
+        <transition Id="39bec7c8-6fb6-4cdf-a8d0-ee4abb63c96f" guard="Position &gt; sp_pos || Defect" label="Position &gt; sp_pos || Defect">
           <stateMoniker name="/eed79b11-1c2b-4d11-b3fe-949c34ba4008/Waitng" />
         </transition>
       </successors>

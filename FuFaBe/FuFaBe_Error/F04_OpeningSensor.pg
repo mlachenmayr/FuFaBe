@@ -10,7 +10,7 @@
     </initialNode>
     <state Id="5c920ade-81af-4696-af70-aff2d680714a" name="NO">
       <successors>
-        <transition Id="c55c0196-91ed-463a-897c-dad9b5e8900f" guard="F04 == true" label="F04 == true">
+        <transition Id="c55c0196-91ed-463a-897c-dad9b5e8900f" guard="true" label="true">
           <stateMoniker name="/631d59c5-4bbb-4414-89d0-db5d9ff447ca/YES" />
         </transition>
         <transition Id="a8d68909-9eb6-49c9-abfd-2b54e17d214d">
