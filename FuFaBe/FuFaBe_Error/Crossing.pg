@@ -48,7 +48,7 @@
       <variable Id="729e7c1c-3a96-4c10-bb58-6444a8c56246" name="Angle" range="0..90" />
     </programGraphHasVariables>
     <programGraphHasVariables Id="f8aaa3d4-7419-4cc5-8c5e-73819baca021">
-      <variable Id="fbdc6b70-021b-4618-8824-03986851b277" name="ClosingTime" range="6" />
+      <variable Id="fbdc6b70-021b-4618-8824-03986851b277" name="ClosingTime" range="9" />
     </programGraphHasVariables>
   </variables>
   <comments>

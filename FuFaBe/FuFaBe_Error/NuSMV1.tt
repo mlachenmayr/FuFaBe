@@ -8,8 +8,8 @@ DEFINE
 	noError := v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO;
 
 -- Check: the crossing cannot be in a State non-closed, when the traincontrol signals the position GP
--- LTLSPEC G noError -> (G !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9))) 
-
+-- LTLSPEC G noError -> (G !((v.V_Crossing != L_Closed) & (v.V_Position <= 0 & v.V_Position > -9)))
+ 
 -- Check: Communication of different message types between sender and receiver
 -- LTLSPEC G noError -> (F(v.V_TrainRadioSender = L_SendCloseSignal) )
 -- LTLSPEC G noError -> (G ((v.V_TrainRadioSender = L_SendCloseSignal) -> X(X(v.V_CrossingRadioReceiver = L_ReceiveClose))))
@@ -61,6 +61,8 @@ DEFINE
 DEFINE
 	hazard := v.V_Angle != 0 & v.V_Position <= 0 & v.V_Position >= -9;
 
+
+
 -- only(\emptyset): v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO
 
 -- Hazard does not occur with empty faultset: true
@@ -68,7 +70,7 @@ DEFINE
 
 -- **** Are the following faultsets with only one fault in the faultset safe?
 
--- Emergency Brake fault: false (This happens when the emergency brake first slows down the train, then stops working and the crossing timeout opens the crossing again. )
+-- * Emergency Brake fault: true
 -- LTLSPEC !((v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
 
 -- * TrainRadioReceiver Loss fault: true
@@ -83,9 +85,8 @@ DEFINE
 -- * Crossing Motor does not work: true
 -- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
 
--- * Opening Sensor fault: true
- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
-
+-- Opening Sensor fault: false 
+-- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
 
 -- Train Odometer fault: false
 -- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
@@ -100,6 +101,22 @@ DEFINE
 
 -- **** faultsets with two faults
 
+-- Emergency Brake fault and
+
+-- TrainRadioReceiver Loss fault: false ?
+-- LTLSPEC !((v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
+
+-- TrainRadioReceiver FalseReport fault: true
+-- LTLSPEC !((v.V_F02_TrainRadioReceiver != L_Loss & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
+
+-- Crossing Motor does not work: false
+-- LTLSPEC !((v.V_F02_TrainRadioReceiver = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
+
+-- CommunicationMedium loss fault: false
+-- LTLSPEC !((v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
+
+
+
 -- TrainRadioReceiver Loss fault and
 
 -- TrainRadioReceiver FalseReport fault: true
@@ -108,38 +125,56 @@ DEFINE
 -- Crossing Motor does not work: true
 -- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
 
--- Opening Sensor fault: 
--- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
-
--- CommunicationMedium loss fault:
--- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_FalseReport) U hazard)
+-- CommunicationMedium loss fault: true
+-- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
 
 
 -- TrainRadioReceiver FalseReport fault and
 
--- Crossing Motor does not work: 
+-- Crossing Motor does not work: false
 -- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_Loss & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
 
--- Opening Sensor fault
--- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_Loss & v.V_F03_CrossingMotor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
-
--- CommunicationMedium loss fault
+-- CommunicationMedium loss fault: false
 -- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_Loss & v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
 
 
 -- Crossing Motor does not work and
 
--- Opening Sensor fault:
--- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
-
--- CommunicationMedium loss fault:
+-- CommunicationMedium loss fault: true
 -- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
 
 
--- Opening Sensor fault and
-
--- CommunicationMedium loss fault
--- LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver = L_NO & v.V_F03_CrossingMotor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
-
 -- **** faultsets with three faults
+
+-- Emergency Brake fault and
+
+-- TrainRadioReceiver FalseReport fault: 
+-- TODO
+
+
+-- TrainRadioReceiver Loss fault and
+-- TrainRadioReceiver FalseReport fault and
+
+-- EmergencyBrake: false ?
+LTLSPEC !((v.V_F03_CrossingMotor = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
+
+-- CommunicationMedium loss: false ?
+LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium = L_NO) U hazard)
+
+-- TrainRadioReceiver Loss fault and
+-- Crossing Motor does not work 
+-- CommunicationMedium loss: true
+LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
+
+-- TrainRadioReceiver Loss fault and
+-- CommunicationMedium loss fault
+-- CrossingMotor does not work: true
+LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
+
+
+-- Crossing Motor does not work and
+-- CommunicationMedium loss fault
+-- Train radio receiver loss: true 
+LTLSPEC !((v.V_F01_EmergencyBrake = L_NO & v.V_F02_TrainRadioReceiver != L_FalseReport & v.V_F03_CrossingMotor != L_OutOfControl & v.V_F04_OpeningSensor = L_NO & v.V_F05_TrainOdometer = L_NO & v.V_F06_CommunicationMedium != L_FalseReport) U hazard)
+
 

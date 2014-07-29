@@ -10,7 +10,7 @@
     </initialNode>
     <state Id="92b70ce4-c6f5-4cb5-b32c-0d0ac6e809bf" name="Idle">
       <successors>
-        <transition Id="638c0df9-c411-460f-a8cf-ac9fe3c70e81" guard="CrossingControl == Closed" label="CrossingControl == Closed">
+        <transition Id="638c0df9-c411-460f-a8cf-ac9fe3c70e81" guard="CrossingControl == Closed &amp;&amp; CrossingRadioReceiver == ReceiveRequest" label="CrossingControl == Closed &amp;&amp; CrossingRadioReceiver == ReceiveRequest">
           <stateMoniker name="/ba0578c3-57e5-4f2a-8b45-aafdb2b167aa/SendResponse" />
         </transition>
       </successors>
@@ -26,6 +26,9 @@
   <importedVariables>
     <programGraphHasImportedVariables Id="cff6d478-fa61-43a3-9fd1-64869f5963c9">
       <importedVariable Id="714f56f6-2a3f-45dd-b66e-21495eb33ead" name="CrossingControl" range="Idle, Closing, Opening, Closed, Opened" />
+    </programGraphHasImportedVariables>
+    <programGraphHasImportedVariables Id="16350f3f-dc1d-442b-b72d-5f525e7c70c4">
+      <importedVariable Id="a8481aea-928c-4adf-8a92-5e963c3a684b" name="CrossingRadioReceiver" range="Idle, ReceiveClose, ReceiveRequest" />
     </programGraphHasImportedVariables>
   </importedVariables>
 </programGraph>

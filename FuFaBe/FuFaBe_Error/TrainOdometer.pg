@@ -94,7 +94,7 @@
       <importedVariable Id="dd45dc38-3f3d-438b-8345-e3e155b3eb59" name="TrainMotion.Position" range="-100..400" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="3715a2c2-bb0c-40cd-82a5-87a78ee37dc4">
-      <importedVariable Id="cc800506-0371-47fc-8f3a-9da5f51e40aa" name="Constants.c" range="3" />
+      <importedVariable Id="cc800506-0371-47fc-8f3a-9da5f51e40aa" name="Constants.c" range="5" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="009c1f9d-dd23-4733-ba7c-d793683d3fb5">
       <importedVariable Id="61d498c8-4d1b-4139-8bb2-cb8d94f14f98" name="TrainMotion.Speed" range="0..9" />
@@ -103,7 +103,7 @@
       <importedVariable Id="0518f032-b9b8-43c2-b319-f78919a39507" name="EmergencyBreak.Deceleration" range="1" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="f9990a70-7cb3-4750-9caa-f9510605f5f6">
-      <importedVariable Id="41020b50-6ca2-4e5c-a48d-f29a1ab5fb81" name="Crossing.ClosingTime" range="6" />
+      <importedVariable Id="41020b50-6ca2-4e5c-a48d-f29a1ab5fb81" name="Crossing.ClosingTime" range="9" />
     </programGraphHasImportedVariables>
     <programGraphHasImportedVariables Id="f6f27e40-91cf-4561-8610-0ce3f8d947be">
       <importedVariable Id="ef37f81c-42a0-4b22-b462-7a1f6c9ea93b" name="Constants.sp_pos" range="-20" />
